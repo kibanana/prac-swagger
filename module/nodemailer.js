@@ -46,7 +46,7 @@ const getMessageHtml = (pick, param) => { // html
       }
     case 2:
       return {
-        html: `<a href="http://127.0.0.1:3000/api/user/findpassword?code=${code}" target="_blank">Click Me!</a><br><br><br>`
+        html: `<a href="http://127.0.0.1:3000/api/users/findpassword?code=${code}" target="_blank">Click Me!</a><br><br><br>`
       }
   }
 }

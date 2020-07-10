@@ -4,7 +4,7 @@ class Message {
   }
 }
 
-// Status Code 200
+// Status Code '200'
 class SuccessMessage extends Message {
   constructor (_data) {
     super('success')

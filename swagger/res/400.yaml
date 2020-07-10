@@ -1,0 +1,13 @@
+'400':
+  description: (Bad Request) 클라이언트 에러 발생
+  content:
+    application/json:
+      schema:
+        type: object
+        properties:
+          message:
+            type: string
+          err_code: 
+            type: string
+          description:
+            type: string

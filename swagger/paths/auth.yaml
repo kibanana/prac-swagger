@@ -1,0 +1,36 @@
+/auth/sign-up:
+  post:
+    summary: 회원가입
+    requestBody:
+      requied: true
+      content:
+        application/x-www-form-urlencoded:
+          schema:
+            $ref: '#/components/schemas/SignUpRequestBody'
+    responses:
+      '200':
+        description: 성공
+
+
+/auth/sign-in:
+  post:
+    summary: 로그인
+    requestBody:
+      requied: true
+      content:
+        application/x-www-form-urlencoded:
+          schema:
+            $ref: '../swagger-config.yaml/components/schemas/SignInRequestBody'
+    responses:
+      '200':
+        description: 성공
+
+
+/auth/jwt-verify:
+  post: # need jwt
+    summary: JWT 토큰 검증
+    security:
+      - BearerAuth: []
+    responses:
+      '200':
+        description: 성공

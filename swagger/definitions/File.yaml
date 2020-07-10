@@ -1,0 +1,11 @@
+type: object
+properties:
+  filename:
+    type: string
+  filepath:
+    type: string
+  uploaderId:
+    type: string
+  createdAt:
+    type: string
+    format: date-time

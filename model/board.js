@@ -31,7 +31,7 @@ boardSchema.statics.createBoard = function (param) {
   return this.create({ userId, title, body })
     .then((result) => result._id)
 }
- 
+
 boardSchema.statics.findBoards = async function (searchString, sortKey) { // 어차피 없으면 undefined
   const aggregation = [
     { 

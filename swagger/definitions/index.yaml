@@ -1,0 +1,10 @@
+Board:
+  $ref: ./Board.yaml
+Code:
+  $ref: ./Code.yaml
+File:
+  $ref: ./File.yaml
+Font:
+  $ref: ./Font.yaml
+User:
+  $ref: ./User.yaml

@@ -1,0 +1,16 @@
+type: object
+properties:
+  fileName:
+    type: string
+  postscriptName:
+    type: string
+  fullName:
+    type: string
+  familyName:
+    type: string
+  subfamilyName:
+    type: string
+  copyright:
+    type: string
+  version:
+    type: string

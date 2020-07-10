@@ -1,0 +1,65 @@
+type: object
+propertise:
+  _id:
+    type: string
+  userId:
+    type: string
+  title:
+    type: string
+  body:
+    type: string
+  likeMembers:
+    type: array
+    items:
+      type: string
+  reportMembers:
+    type: array
+    items:
+      type: object
+      properties:
+        _id:
+          type: string
+        userId:
+          type: string
+        code:
+          type: integer
+          format: int64
+          minimum: 1
+        value:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+  comments:
+    type: array
+    items:
+      type: object
+      properties:
+        _id:
+          type: string
+        userId:
+          type: string
+        value: string
+        commentReportMembers:
+          type: array
+          items:
+            type: object
+            properties:
+              _id:
+                type: string
+              userId:
+                type: string
+              code:
+                type: integer
+                format: int64
+                minimum: 1
+              value:
+                type: string
+              createdAt:
+                type: string   
+                format: date-time    
+  isDeleted:
+    type: boolean
+  createdAt:
+    type: string
+    format: date-time

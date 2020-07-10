@@ -1,0 +1,458 @@
+/boards:
+  get:
+    summary: board 컬렉션 가져오기
+    parameters:
+      - name: searchString
+        in: query
+        description: 검색을 위한 문자열.
+        schema:
+          type: string
+      - name: sortKey
+        in: query
+        description: 정렬을 위한 키.
+        schema:
+          type: integer
+          format: int64
+          minimum: 1
+    responses:
+      '200':
+        description: 성공
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                message:
+                  type: string
+                data:
+                  type: array
+                  items:
+                    $ref: '../definitions/Board.yaml'
+      '500':
+        $ref: '../res/500.yaml'
+  
+  post: # need jwt
+    summary: board 도큐먼트 추가
+    security:
+      - BearerAuth: []
+    requestBody:
+      required: true
+      content:
+        application/x-www-form-urlencoded:
+          schema:
+            type: object
+            propertise:
+              title:
+                type: string
+              body:
+                type: string
+    responses:
+      '200':
+        description: 성공
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                message:
+                  type: string
+                data:
+                  type: string
+      '400':
+        $ref: '../res/400.yaml'
+      '401':
+        $ref: '../res/401.yaml'
+      '500':
+        $ref: '../res/500.yaml'
+
+
+/boards/{id}:
+  get:
+    summary: board 도큐먼트 가져오기
+    parameters:
+      - name: id
+        in: path
+        required: true
+        description: 가져올 board id.
+        schema:
+          type: string
+    responses:
+      '200':
+        description: 성공
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                message:
+                  type: string
+                data:
+                  $ref: '../definitions/Board.yaml'
+      '400':
+        $ref: '../res/400.yaml'
+      '404':
+        $ref: '../res/404.yaml'
+      '500':
+        $ref: '../res/500.yaml'
+
+  patch: # need jwt
+    summary: board 도큐먼트 수정
+    security:
+      - BearerAuth: []
+    parameters:
+      - name: id
+        in: path
+        required: true
+        description: 수정할 board id.
+        schema:
+          type: string
+    requestBody:
+      required: true
+      content:
+        application/x-www-form-urlencoded:
+          schema:
+            type: object
+            propertise:
+              title:
+                type: string
+              body:
+                type: string
+    responses:
+      '200':
+        description: 성공
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                message:
+                  type: string
+      '400':
+        $ref: '../res/400.yaml'
+      '401':
+        $ref: '../res/401.yaml'
+      '404':
+        $ref: '../res/404.yaml'
+      '500':
+        $ref: '../res/500.yaml'
+
+  delete: # need jwt
+    summary: board 도큐먼트 삭제
+    security:
+      - BearerAuth: []
+    parameters:
+      - name: id
+        in: path
+        required: true
+        description: 삭제할 board id
+        schema:
+          type: string
+    responses:
+      '200':
+        description: 성공
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                message:
+                  type: string
+      '400':
+        $ref: '../res/400.yaml'
+      '401':
+        $ref: '../res/401.yaml'
+      '404':
+        $ref: '../res/404.yaml'
+      '500':
+        $ref: '../res/500.yaml'
+
+/boards/analysis:
+  get:
+    summary: board 통계 가져오기
+    responses:
+      '200':
+        description: 성공
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                message:
+                  type: string
+                data:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      boardCnt:
+                        type: integer
+                      likeCnt:
+                        type: integer
+                      username:
+                        type: string
+      '500':
+        $ref: '../res/500.yaml'
+
+
+/boards/{id}/like: # need jwt
+  post:
+    summary: board 좋아요
+    security:
+      - BearerAuth: []
+    parameters:
+      - name: id
+        in: path
+        required: true
+        description: 좋아요 누를 board id.
+        schema:
+          type: string
+    responses:
+      '200':
+        description: 성공
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                message:
+                  type: string
+      '400':
+        $ref: '../res/400.yaml'
+      '401':
+        $ref: '../res/401.yaml'
+      # 여기에 '404'
+      '500':
+        $ref: '../res/500.yaml'
+
+
+/boards/{id}/like/cancel: # need jwt
+  delete:
+    summary: board 좋아요 취소
+    security:
+      - BearerAuth: []
+    parameters:
+      - name: id
+        in: path
+        required: true
+        description: 좋아요 취소할 board id.
+        schema:
+          type: string
+    responses:
+      '200':
+        description: 성공
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                message:
+                  type: string
+      '400':
+        $ref: '../res/400.yaml'
+      '401':
+        $ref: '../res/401.yaml'
+      '500':
+        $ref: '../res/500.yaml'
+
+
+/boards/{id}/report: # need jwt
+  post:
+    summary: board 신고
+    security:
+      - BearerAuth: []
+    parameters:
+      - name: id
+        in: path
+        required: true
+        description: 신고할 board id.
+        schema:
+          type: string
+    requestBody:
+      required: true
+      content:
+        application/x-www-form-urlencoded:
+          schema:
+            type: object
+            propertise:
+              code:
+                type: integer
+                minimum: 1
+              value:
+                type: string
+    responses:
+      '200':
+        description: 성공
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                message:
+                  type: string
+      '400':
+        $ref: '../res/400.yaml'
+      '401':
+        $ref: '../res/401.yaml'
+      # 여기에 '404'
+      '500':
+        $ref: '../res/500.yaml'
+
+
+/boards/{id}/comment: # need jwt
+  post:
+    summary: board 댓글 추가
+    security:
+      - BearerAuth: []
+    parameters:
+      - name: id
+        in: path
+        required: true
+        description: 댓글을 작성할 board id.
+        schema:
+          type: string
+    requestBody:
+      required: true
+      content:
+        application/x-www-form-urlencoded:
+          schema:
+            type: object
+            propertise:
+              value:
+                type: string
+    responses:
+      '200':
+        description: 성공
+        content:
+          application/json:
+            schema:
+              type: object
+      '400':
+        $ref: '../res/400.yaml'
+      '401':
+        $ref: '../res/401.yaml'
+      '500':
+        $ref: '../res/500.yaml'
+
+
+/boards/{boardId}/comment/{commentId}:
+  patch: # need jwt
+    summary: board 댓글 수정
+    security:
+      - BearerAuth: []
+    parameters:
+      - name: boardId
+        in: path
+        required: true
+        description: 댓글이 달려있는 board id
+        schema:
+          type: string
+      - name: commentId
+        in: path
+        required: true
+        description: 수정할 댓글의 comment id
+        schema:
+          type: string
+    requestBody:
+      required: true
+      content:
+        application/x-www-form-urlencoded:
+          schema:
+            type: object
+            propertise:
+              value:
+                type: string
+    responses:
+      '200':
+        description: 성공
+        content:
+          application/json:
+            schema:
+              type: object
+      '400':
+        $ref: '../res/400.yaml'
+      '401':
+        $ref: '../res/401.yaml'
+      '500':
+        $ref: '../res/500.yaml'
+
+  delete: # need jwt
+    summary: board 댓글 삭제
+    security:
+      - BearerAuth: []
+    parameters:
+      - name: boardId
+        in: path
+        required: true
+        description: 댓글이 달려있는 board id
+        schema:
+          type: string
+      - name: commentId
+        in: path
+        required: true
+        description: 삭제할 댓글의 comment id
+        schema:
+          type: string
+    responses:
+      '200':
+        description: 성공
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                message:
+                  type: string
+      '400':
+        $ref: '../res/400.yaml'
+      '401':
+        $ref: '../res/401.yaml'
+      '500':
+        $ref: '../res/500.yaml'
+
+
+/boards/{boardId}/comment/{commentId}/report:
+  post: # need jwt
+    summary: board 댓글 신고
+    security:
+      - BearerAuth: []
+    parameters:
+      - name: boardId
+        in: path
+        required: true
+        description: 댓글이 달려있는 board id
+        schema:
+          type: string
+      - name: commentId
+        in: path
+        required: true
+        description: 신고할 댓글의 comment id
+        schema:
+          type: string
+    requestBody:
+      required: true
+      content:
+        application/x-www-form-urlencoded:
+          schema:
+            type: object
+            propertise:
+              code:
+                type: integer
+                minimum: 1
+              value:
+                type: string
+    responses:
+      '200':
+        description: 성공
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                message:
+                  type: string
+      '400':
+        $ref: '../res/400.yaml'
+      '401':
+        $ref: '../res/401.yaml'
+      '500':
+        $ref: '../res/500.yaml'

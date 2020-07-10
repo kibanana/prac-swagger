@@ -1,0 +1,13 @@
+'404':
+  description: Not Found 에러 발생(요청한 리소스를 찾을 수 없음)
+  content:
+    application/json:
+      schema:
+        type: object
+        properties:
+          message:
+            type: string
+          err_code: 
+            type: string
+          description:
+            type: string

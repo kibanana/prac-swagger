@@ -1,0 +1,33 @@
+
+  # schemas:
+  #   SignUpRequestBody:
+  #     type: object
+  #     propertise:
+  #       email:
+  #         type: string
+  #       password:
+  #         type: string
+  #       nickname:
+  #         type: string
+  #       address:
+  #         type: string
+  #       birthDay:
+  #         type: string
+  #   SignInRequestBody:
+  #     type: object
+  #     propertise:
+  #       email:
+  #         type: string
+  #       password:
+  #         type: string
+      
+  #   Board:
+  #     $ref: './swagger/definitions/Board.yaml'
+  #   Code:
+  #     $ref: './swagger/definitions/Code.yaml'
+  #   File:
+  #     $ref: './swagger/definitions/File.yaml'
+  #   Font:
+  #     $ref: './swagger/definitions/Font.yaml'
+  #   User:
+  #     $ref: './swagger/definitions/User.yaml'
