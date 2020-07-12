@@ -44,9 +44,8 @@ async (req, res, next) => {
   })
   .catch(err => console.log(err))
 }, (req, res, next) => {
-  console.log(req.config)
-  res.json(req.config)
   // swaggerUi.setup(req.config);
+  res.json(req.config)
 })
 const server = http.createServer(app)
 const io = require('socket.io')(server)

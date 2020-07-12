@@ -1,9 +1,7 @@
-'500':
-  description: (Internal Server Error) 서버 에러 발생
+description: (Internal Server Error) 서버 에러 발생
   content:
-    application/json:
-      schema:
-        type: object
-        properties:
-          message:
-            type: string
+    schema:
+      type: object
+      properties:
+        message:
+          type: string

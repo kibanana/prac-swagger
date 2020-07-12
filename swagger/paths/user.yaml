@@ -12,7 +12,7 @@
                 type: string
                 format: email
     responses:
-      '200':
+      200:
         description: 성공
         content:
           application/json:
@@ -23,10 +23,10 @@
                   type: string
                 data:
                   type: string
-      '400':
-        $ref: '../res/400.yaml'
-      '500':
-        $ref: '../res/500.yaml'
+      400:
+        $ref: #/components/res/400.yaml
+      500:
+        $ref: #/components/res/500.yaml
 
 /users/password:
   patch: # need jwt
@@ -47,7 +47,7 @@
                 type: string
                 format: password
     responses:
-      '200':
+      200:
         description: 성공
         content:
           application/json:
@@ -56,12 +56,12 @@
               properties:
                 message:
                   type: string
-      '400':
-        $ref: '../res/400.yaml'
-      '401':
-        $ref: '../res/401.yaml'
-      '500':
-        $ref: '../res/500.yaml'
+      400:
+        $ref: #/components/res/400.yaml
+      401:
+        $ref: #/components/res/401.yaml
+      500:
+        $ref: #/components/res/500.yaml
 
 /users/nickname:
   patch: # need jwt
@@ -78,7 +78,7 @@
               nickname:
                 type: string
     responses:
-      '200':
+      200:
         description: 성공
         content:
           application/json:
@@ -87,12 +87,12 @@
               properties:
                 message:
                   type: string
-      '400':
-        $ref: '../res/400.yaml'
-      '401':
-        $ref: '../res/401.yaml'
-      '500':
-        $ref: '../res/500.yaml'
+      400:
+        $ref: #/components/res/400.yaml
+      401:
+        $ref: #/components/res/401.yaml
+      500:
+        $ref: #/components/res/500.yaml
 
 /users/info:
   patch: # need jwt
@@ -112,7 +112,7 @@
                 type: string
                 format: date
     responses:
-      '200':
+      200:
         description: 성공
         content:
           application/json:
@@ -121,9 +121,9 @@
               properties:
                 message:
                   type: string
-      '400':
-        $ref: '../res/400.yaml'
-      '401':
-        $ref: '../res/401.yaml'
-      '500':
-        $ref: '../res/500.yaml'
+      400:
+        $ref: #/components/res/400.yaml
+      401:
+        $ref: #/components/res/401.yaml
+      500:
+        $ref: #/components/res/500.yaml

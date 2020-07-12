@@ -14,7 +14,7 @@
           type: integer
           minimum: 1
     responses:
-      '200':
+      200:
         description: 성공
         content:
           application/json:
@@ -26,9 +26,9 @@
                 data:
                   type: array
                   items:
-                    $ref: '../definitions/Board.yaml'
-      '500':
-        $ref: '../res/500.yaml'
+                    $ref: ../definitions/Board.yaml
+      500:
+        $ref: '#/components/res/500.yaml'
   
   post: # need jwt
     summary: board 도큐먼트 추가
@@ -46,7 +46,7 @@
               body:
                 type: string
     responses:
-      '200':
+      200:
         description: 성공
         content:
           application/json:
@@ -57,12 +57,12 @@
                   type: string
                 data:
                   type: string
-      '400':
-        $ref: '../res/400.yaml'
-      '401':
-        $ref: '../res/401.yaml'
-      '500':
-        $ref: '../res/500.yaml'
+      400:
+        $ref: '#/components/res/400.yaml'
+      401:
+        $ref: '#/components/res/401.yaml'
+      500:
+        $ref: '#/components/res/500.yaml'
 
 
 /boards/{id}:
@@ -76,7 +76,7 @@
         schema:
           type: string
     responses:
-      '200':
+      200:
         description: 성공
         content:
           application/json:
@@ -86,13 +86,13 @@
                 message:
                   type: string
                 data:
-                  $ref: '../definitions/Board.yaml'
-      '400':
-        $ref: '../res/400.yaml'
-      '404':
-        $ref: '../res/404.yaml'
-      '500':
-        $ref: '../res/500.yaml'
+                  $ref: ../definitions/Board.yaml
+      400:
+        $ref: '#/components/res/400.yaml'
+      404:
+        $ref: '#/components/res/404.yaml'
+      500:
+        $ref: '#/components/res/500.yaml'
 
   patch: # need jwt
     summary: board 도큐먼트 수정
@@ -117,7 +117,7 @@
               body:
                 type: string
     responses:
-      '200':
+      200:
         description: 성공
         content:
           application/json:
@@ -126,14 +126,14 @@
               properties:
                 message:
                   type: string
-      '400':
-        $ref: '../res/400.yaml'
-      '401':
-        $ref: '../res/401.yaml'
-      '404':
-        $ref: '../res/404.yaml'
-      '500':
-        $ref: '../res/500.yaml'
+      400:
+        $ref: '#/components/res/400.yaml'
+      401:
+        $ref: '#/components/res/401.yaml'
+      404:
+        $ref: '#/components/res/404.yaml'
+      500:
+        $ref: '#/components/res/500.yaml'
 
   delete: # need jwt
     summary: board 도큐먼트 삭제
@@ -147,7 +147,7 @@
         schema:
           type: string
     responses:
-      '200':
+      200:
         description: 성공
         content:
           application/json:
@@ -156,20 +156,20 @@
               properties:
                 message:
                   type: string
-      '400':
-        $ref: '../res/400.yaml'
-      '401':
-        $ref: '../res/401.yaml'
-      '404':
-        $ref: '../res/404.yaml'
-      '500':
-        $ref: '../res/500.yaml'
+      400:
+        $ref: '#/components/res/400.yaml'
+      401:
+        $ref: '#/components/res/401.yaml'
+      404:
+        $ref: '#/components/res/404.yaml'
+      500:
+        $ref: '#/components/res/500.yaml'
 
 /boards/analysis:
   get:
     summary: board 통계 가져오기
     responses:
-      '200':
+      200:
         description: 성공
         content:
           application/json:
@@ -189,8 +189,8 @@
                         type: integer
                       username:
                         type: string
-      '500':
-        $ref: '../res/500.yaml'
+      500:
+        $ref: '#/components/res/500.yaml'
 
 
 /boards/{id}/like: # need jwt
@@ -206,7 +206,7 @@
         schema:
           type: string
     responses:
-      '200':
+      200:
         description: 성공
         content:
           application/json:
@@ -215,13 +215,13 @@
               properties:
                 message:
                   type: string
-      '400':
-        $ref: '../res/400.yaml'
-      '401':
-        $ref: '../res/401.yaml'
-      # 여기에 '404'
-      '500':
-        $ref: '../res/500.yaml'
+      400:
+        $ref: '#/components/res/400.yaml'
+      401:
+        $ref: '#/components/res/401.yaml'
+      # 여기에 404
+      500:
+        $ref: '#/components/res/500.yaml'
 
 
 /boards/{id}/like/cancel: # need jwt
@@ -237,7 +237,7 @@
         schema:
           type: string
     responses:
-      '200':
+      200:
         description: 성공
         content:
           application/json:
@@ -246,12 +246,12 @@
               properties:
                 message:
                   type: string
-      '400':
-        $ref: '../res/400.yaml'
-      '401':
-        $ref: '../res/401.yaml'
-      '500':
-        $ref: '../res/500.yaml'
+      400:
+        $ref: '#/components/res/400.yaml'
+      401:
+        $ref: '#/components/res/401.yaml'
+      500:
+        $ref: '#/components/res/500.yaml'
 
 
 /boards/{id}/report: # need jwt
@@ -279,7 +279,7 @@
               value:
                 type: string
     responses:
-      '200':
+      200:
         description: 성공
         content:
           application/json:
@@ -288,13 +288,13 @@
               properties:
                 message:
                   type: string
-      '400':
-        $ref: '../res/400.yaml'
-      '401':
-        $ref: '../res/401.yaml'
-      # 여기에 '404'
-      '500':
-        $ref: '../res/500.yaml'
+      400:
+        $ref: '#/components/res/400.yaml'
+      401:
+        $ref: '#/components/res/401.yaml'
+      # 여기에 404
+      500:
+        $ref: '#/components/res/500.yaml'
 
 
 /boards/{id}/comment: # need jwt
@@ -319,18 +319,18 @@
               value:
                 type: string
     responses:
-      '200':
+      200:
         description: 성공
         content:
           application/json:
             schema:
               type: object
-      '400':
-        $ref: '../res/400.yaml'
-      '401':
-        $ref: '../res/401.yaml'
-      '500':
-        $ref: '../res/500.yaml'
+      400:
+        $ref: '#/components/res/400.yaml'
+      401:
+        $ref: '#/components/res/401.yaml'
+      500:
+        $ref: '#/components/res/500.yaml'
 
 
 /boards/{boardId}/comment/{commentId}:
@@ -361,18 +361,18 @@
               value:
                 type: string
     responses:
-      '200':
+      200:
         description: 성공
         content:
           application/json:
             schema:
               type: object
-      '400':
-        $ref: '../res/400.yaml'
-      '401':
-        $ref: '../res/401.yaml'
-      '500':
-        $ref: '../res/500.yaml'
+      400:
+        $ref: '#/components/res/400.yaml'
+      401:
+        $ref: '#/components/res/401.yaml'
+      500:
+        $ref: '#/components/res/500.yaml'
 
   delete: # need jwt
     summary: board 댓글 삭제
@@ -392,7 +392,7 @@
         schema:
           type: string
     responses:
-      '200':
+      200:
         description: 성공
         content:
           application/json:
@@ -401,12 +401,12 @@
               properties:
                 message:
                   type: string
-      '400':
-        $ref: '../res/400.yaml'
-      '401':
-        $ref: '../res/401.yaml'
-      '500':
-        $ref: '../res/500.yaml'
+      400:
+        $ref: '#/components/res/400.yaml'
+      401:
+        $ref: '#/components/res/401.yaml'
+      500:
+        $ref: '#/components/res/500.yaml'
 
 
 /boards/{boardId}/comment/{commentId}/report:
@@ -440,7 +440,7 @@
               value:
                 type: string
     responses:
-      '200':
+      200:
         description: 성공
         content:
           application/json:
@@ -449,9 +449,9 @@
               properties:
                 message:
                   type: string
-      '400':
-        $ref: '../res/400.yaml'
-      '401':
-        $ref: '../res/401.yaml'
-      '500':
-        $ref: '../res/500.yaml'
+      400:
+        $ref: '#/components/res/400.yaml'
+      401:
+        $ref: '#/components/res/401.yaml'
+      500:
+        $ref: '#/components/res/500.yaml'

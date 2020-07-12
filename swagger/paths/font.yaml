@@ -2,7 +2,7 @@
   get:
     summary: font 컬렉션 가져오기
     responses:
-      '200':
+      200:
         description: 성공
         content:
           application/json:
@@ -14,9 +14,9 @@
                 data:
                   type: array
                   items:
-                    $ref: '../definitions/Font.yaml'
-      '500':
-        $ref: '../res/500.yaml'
+                    $ref: ../definitions/Font.yaml
+      500:
+        $ref: #/components/res/500.yaml
 
 /fonts/upload:
   post:
@@ -34,7 +34,7 @@
                 type: string
                 format: binary
     responses:
-      '200':
+      200:
         description: 성공
         content:
           application/json:
@@ -43,9 +43,9 @@
               properties:
                 message:
                   type: string
-      '400':
-        $ref: '../res/400.yaml'
-      '401':
-        $ref: '../res/401.yaml'
-      '500':
-        $ref: '../res/500.yaml'
+      400:
+        $ref: #/components/res/400.yaml
+      401:
+        $ref: #/components/res/401.yaml
+      500:
+        $ref: #/components/res/500.yaml

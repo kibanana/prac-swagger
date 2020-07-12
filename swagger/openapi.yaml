@@ -12,7 +12,72 @@ servers:
       basePath:
         default: v1
 paths: # object
-  $ref: './swagger/paths/index.yaml'
+  # $ref: ./swagger/paths/auth.yaml
+  /boards:
+    get:
+      summary: board 컬렉션 가져오기
+      parameters:
+        - name: searchString
+          in: query
+          description: 검색을 위한 문자열
+          schema:
+            type: string
+        - name: sortKey
+          in: query
+          description: 정렬을 위한 키
+          schema:
+            type: integer
+            minimum: 1
+      responses:
+        200:
+          description: 성공
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                  data:
+                    type: array
+                    items:
+                      $ref: ../definitions/Board.yaml
+        500:
+          $ref: '#/components/res/500.yaml'
+    
+    post: # need jwt
+      summary: board 도큐먼트 추가
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              propertise:
+                title:
+                  type: string
+                body:
+                  type: string
+      responses:
+        200:
+          description: 성공
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                  data:
+                    type: string
+        400:
+          $ref: '#/components/res/400.yaml'
+        401:
+          $ref: '#/components/res/401.yaml'
+        500:
+          $ref: '#/components/res/500.yaml'
 security:
   - BearerAuth: []
 components:
@@ -21,14 +86,23 @@ components:
       type: http
       scheme: bearer
       bearerFormat: JWT
+  res:
+    '400':
+      $ref: ./swagger/res/400.yaml
+    '401':
+      $ref: ./swagger/res/401.yaml
+    '404':
+      $ref: ./swagger/res/404.yaml
+    '500':
+      $ref: ./swagger/res/500.yaml
   schemas:
     Board:
-      $ref: './swagger/definitions/Board.yaml'
+      $ref: ./swagger/definitions/Board.yaml
     Code:
-      $ref: './swagger/definitions/Code.yaml'
+      $ref: ./swagger/definitions/Code.yaml
     File:
-      $ref: './swagger/definitions/File.yaml'
+      $ref: ./swagger/definitions/File.yaml
     Font:
-      $ref: './swagger/definitions/Font.yaml'
+      $ref: ./swagger/definitions/Font.yaml
     User:
-      $ref: './swagger/definitions/User.yaml'
+      $ref: ./swagger/definitions/User.yaml

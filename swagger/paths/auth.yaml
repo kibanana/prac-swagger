@@ -1,23 +1,23 @@
 /auth/sign-up:
   post:
-    summary: 회원가입
+    description: 회원가입
     requestBody:
-      requied: true
+      required: true
       content:
         application/x-www-form-urlencoded:
           schema:
             type: object
-          propertise:
-            email:
-              type: string
-            password:
-              type: string
-            nickname:
-              type: string
-            address:
-              type: string
-            birthDay:
-              type: string
+            propertise:
+              email:
+                type: string
+              password:
+                type: string
+              nickname:
+                type: string
+              address:
+                type: string
+              birthDay:
+                type: string
     responses:
       '200':
         description: 성공
@@ -27,62 +27,59 @@
               type: object
               properties:
                 message:
-                  type: string
-              
-      '400':
-        $ref: '../res/400.yaml'
-      '500':
-        $ref: '../res/500.yaml'
-
-
-/auth/sign-in:
-  post:
-    summary: 로그인
-    requestBody:
-      requied: true
-      content:
-        application/x-www-form-urlencoded:
-          schema:
-            type: object
-          propertise:
-            email:
-              type: string
-            password:
-              type: string
-    responses:
-      '200':
-        description: 성공
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                message:
-                  type: string
-                data:
                   type: string
       '400':
-        $ref: '../res/400.yaml'
+        $ref: '#/components/res/400'
       '500':
-        $ref: '../res/500.yaml'
+        $ref: '#/components/res/500'
 
 
-/auth/jwt-verify:
-  post: # need jwt
-    summary: JWT 토큰 검증
-    security:
-      - BearerAuth: []
-    responses:
-      '200':
-        description: 성공
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                message:
-                  type: string
-      '401':
-        $ref: '../res/401.yaml'
-      '500':
-        $ref: '../res/500.yaml'
+# /auth/sign-in:
+#   post:
+#     description: 로그인
+#     requestBody:
+#       requied: true
+#       content:
+#         application/x-www-form-urlencoded:
+#           schema:
+#             type: object
+#           propertise:
+#             email:
+#               type: string
+#             password:
+#               type: string
+#     responses:
+#       200:
+#         description: 성공
+          # content:
+          #   application/json:
+      #         schema:
+      #           type: object
+      #           properties:
+      #             message:
+      #               type: string
+      #             data:
+      #               type: string
+#       400:
+#         $ref: '#/components/res/400'
+#       500:
+#         $ref: '#/components/res/500'
+
+
+# /auth/jwt-verify:
+#   post: # need jwt
+#     description: JWT 토큰 검증
+#     security:
+#       - BearerAuth: []
+#     responses:
+#       200:
+#         description: 성공
+#           schema:
+#             type: object
+#             properties:
+#               message:
+#                 type: string
+#       401:
+#         $ref: '#/components/res/401'
+#       500:
+#         $ref: '#/components/res/500'
