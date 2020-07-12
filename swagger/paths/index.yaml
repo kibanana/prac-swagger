@@ -6,10 +6,33 @@
       content:
         application/x-www-form-urlencoded:
           schema:
-            $ref: '#/components/schemas/SignUpRequestBody'
+            type: object
+          propertise:
+            email:
+              type: string
+            password:
+              type: string
+            nickname:
+              type: string
+            address:
+              type: string
+            birthDay:
+              type: string
     responses:
       '200':
         description: 성공
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                message:
+                  type: string
+              
+      '400':
+        $ref: '../res/400.yaml'
+      '500':
+        $ref: '../res/500.yaml'
 
 
 /auth/sign-in:
@@ -20,10 +43,28 @@
       content:
         application/x-www-form-urlencoded:
           schema:
-            $ref: '../swagger-config.yaml/components/schemas/SignInRequestBody'
+            type: object
+          propertise:
+            email:
+              type: string
+            password:
+              type: string
     responses:
       '200':
         description: 성공
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                message:
+                  type: string
+                data:
+                  type: string
+      '400':
+        $ref: '../res/400.yaml'
+      '500':
+        $ref: '../res/500.yaml'
 
 
 /auth/jwt-verify:
@@ -33,21 +74,31 @@
       - BearerAuth: []
     responses:
       '200':
-        description: 성공/boards:
+        description: 성공
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                message:
+                  type: string
+      '401':
+        $ref: '../res/401.yaml'
+      '500':
+        $ref: '../res/500.yaml'/boards:
   get:
     summary: board 컬렉션 가져오기
     parameters:
       - name: searchString
         in: query
-        description: 검색을 위한 문자열.
+        description: 검색을 위한 문자열
         schema:
           type: string
       - name: sortKey
         in: query
-        description: 정렬을 위한 키.
+        description: 정렬을 위한 키
         schema:
           type: integer
-          format: int64
           minimum: 1
     responses:
       '200':

@@ -8,37 +8,27 @@ servers:
     description: Local Server
     variables:
       port:
-        default: 8000
+        default: 3000
       basePath:
         default: v1
 paths: # object
-  /boards:
-    get:
-      summary: board 컬렉션 가져오기
-      operationId: getUsers
-      parameters:
-        - in: query
-          name: searchString
-          description: 검색을 위한 문자열
-          schema:
-            type: string
-        - in: query
-          name: sortKey
-          description: 정렬을 위한 키
-          schema:
-            type: integer
-            format: int64
-            minimum: 1
-      responses:
-        '200':
-          description: 성공
-        default:
-          description: Unexpected response
+  $ref: './swagger/paths/index.yaml'
+security:
+  - BearerAuth: []
 components:
   securitySchemes:
     BearerAuth:
       type: http
       scheme: bearer
       bearerFormat: JWT
-security:
-  - BearerAuth: []
+  schemas:
+    Board:
+      $ref: './swagger/definitions/Board.yaml'
+    Code:
+      $ref: './swagger/definitions/Code.yaml'
+    File:
+      $ref: './swagger/definitions/File.yaml'
+    Font:
+      $ref: './swagger/definitions/Font.yaml'
+    User:
+      $ref: './swagger/definitions/User.yaml'

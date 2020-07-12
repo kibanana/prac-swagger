@@ -19,7 +19,6 @@ require('./model')
 
 const app = express()
 
-app.use('/', express.static(path.join(__dirname, './node_modules/swagger-ui/dist')))
 app.use(express.urlencoded({ extended: true }))
 app.use(express.json())
 app.use(passport.initialize())
@@ -29,8 +28,9 @@ app.use(cors())
 app.use('/api', api)
 app.use('/v1', api)
 
+app.use('/', express.static(path.join(__dirname)))
 app.use('/', swaggerUi.serve)
-app.get('/',
+app.get('/api-docs',
 async (req, res, next) => {
   swaggerPathsCreator()
   .then(() => {
@@ -38,17 +38,15 @@ async (req, res, next) => {
   })
   .then((swaggerConfigYaml) => {
     // 여기서 value로 처리하니까 계속 문제가 생김 (두 번으로 중복되는 yaml 값이 들어감)
-    // req.config = jsYaml.safeLoad(swaggerConfigYaml)
-    console.log(`안녕!${swaggerConfigYaml}`)
-    if (req.config === null) {
-      req.config = swaggerConfigYaml
-    }
-    // value = jsYaml.safeLoad(swaggerConfigYaml)
+    // req.config = swaggerConfigYaml
+    req.config = jsYaml.safeLoad(swaggerConfigYaml)
     next()
   })
   .catch(err => console.log(err))
 }, (req, res, next) => {
-  swaggerUi.setup(req.config)
+  console.log(req.config)
+  res.json(req.config)
+  // swaggerUi.setup(req.config);
 })
 const server = http.createServer(app)
 const io = require('socket.io')(server)
@@ -69,6 +67,6 @@ io.on('connection', (socket) => {
   })
 })
 
-server.listen(8000, () => {
+server.listen(3000, () => {
   console.log('Server is listening on port 3000!')
 })

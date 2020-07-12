@@ -4,15 +4,14 @@
     parameters:
       - name: searchString
         in: query
-        description: 검색을 위한 문자열.
+        description: 검색을 위한 문자열
         schema:
           type: string
       - name: sortKey
         in: query
-        description: 정렬을 위한 키.
+        description: 정렬을 위한 키
         schema:
           type: integer
-          format: int64
           minimum: 1
     responses:
       '200':
