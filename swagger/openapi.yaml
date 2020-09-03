@@ -40,6 +40,122 @@ components:
     User:
       $ref: ./swagger/definitions/User.yaml
 paths:
+  /auth/sign-up:
+    post:
+      description: 회원가입
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              propertise:
+                email:
+                  type: string
+                  format: email
+                  example: kyw017763@gmail.com
+                password:
+                  type: string
+                  format: password
+                  example: asdf1234
+                nickname:
+                  type: string
+                  example: cat
+                address:
+                  type: string
+                  example: cat's house
+                birthDay:
+                  type: string
+                  format: date
+                  example: 2001-06-30
+      responses:
+        200:
+          description: 성공
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: success
+        400:
+          description: (Bad Request) 클라이언트 에러 발생
+          content:
+            application/json:
+              $ref: '#/components/responses/ERR_INTERNAL_ERROR'
+        500:
+          description: (Internal Server Error) 서버 에러 발생
+          content:
+            application/json:
+              $ref: '#/components/responses/ERR_INTERNAL_ERROR'
+
+  /auth/sign-in:
+    post:
+      description: 로그인
+      requestBody:
+        requied: true
+        content:
+          application/json:
+            schema:
+              type: object
+            propertise:
+              email:
+                type: string
+                format: email
+                example: kyw017763@gmail.com
+              password:
+                type: string
+                format: password
+                example: asdf1234
+      responses:
+        200:
+          description: 성공
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: success
+        400:
+          description: (Bad Request) 클라이언트 에러 발생
+          content:
+            application/json:
+              $ref: '#/components/responses/ERR_INTERNAL_ERROR'
+        401:
+          description: (Unauthorized) 인증 에러 발생
+        500:
+          description: (Internal Server Error) 서버 에러 발생
+          content:
+            application/json:
+              $ref: '#/components/responses/ERR_INTERNAL_ERROR'
+
+  /auth/jwt-verify:
+    post:
+      description: JWT 토큰 검증
+      security:
+        - BearerAuth: []
+      responses:
+        200:
+          description: 성공
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: success
+        401:
+          description: (Unauthorized) 인증 에러 발생
+        500:
+          description: (Internal Server Error) 서버 에러 발생
+          content:
+            application/json:
+              $ref: '#/components/responses/ERR_INTERNAL_ERROR'
+
   /boards:
     get:
       summary: board 컬렉션 가져오기
@@ -121,6 +237,733 @@ paths:
                   type: string
                 body:
                   type: string
+      responses:
+        200:
+          description: 성공
+          content:
+            application/json:
+              $ref: '#/components/responses/SUCCESS'
+        400:
+          description: (Bad Request) 클라이언트 에러 발생
+          content:
+            application/json:
+              $ref: '#/components/responses/ERR_BAD_REQUEST'
+        401:
+          description: (Unauthorized) 인증 에러 발생
+        500:
+          description: (Internal Server Error) 서버 에러 발생
+          content:
+            application/json:
+              $ref: '#/components/responses/ERR_INTERNAL_ERROR'
+
+  /boards/{id}:
+    get:
+      summary: board 도큐먼트 가져오기
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: 가져올 board 도큐먼트의 ObjectId
+          schema:
+            type: string
+      responses:
+        200:
+          description: 성공
+          content:
+            application/json:
+              $ref: '#/components/responses/SUCCESS'
+        400:
+          description: (Bad Request) 클라이언트 에러 발생
+          content:
+            application/json:
+              $ref: '#/components/responses/ERR_BAD_REQUEST'
+        404:
+          description: (Not Found) 원하는 리소스를 제공할 수 없음
+          content:
+            application/json:
+              $ref: '#/components/responses/ERR_BAD_REQUEST'
+        500:
+          description: (Internal Server Error) 서버 에러 발생
+          content:
+            application/json:
+              $ref: '#/components/responses/ERR_INTERNAL_ERROR'
+
+    patch: # need jwt
+      summary: board 도큐먼트 수정
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: 수정할 board 도큐먼트의 ObjectId
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              propertise:
+                title:
+                  type: string
+                body:
+                  type: string
+      responses:
+          200:
+            description: 성공
+            content:
+              application/json:
+                $ref: '#/components/responses/SUCCESS'
+          400:
+            description: (Bad Request) 클라이언트 에러 발생
+            content:
+              application/json:
+                $ref: '#/components/responses/ERR_BAD_REQUEST'
+          401:
+            description: (Unauthorized) 인증 에러 발생
+          404:
+            description: (Not Found) 원하는 리소스를 제공할 수 없음
+            content:
+              application/json:
+                $ref: '#/components/responses/ERR_BAD_REQUEST'
+          500:
+            description: (Internal Server Error) 서버 에러 발생
+            content:
+              application/json:
+                $ref: '#/components/responses/ERR_INTERNAL_ERROR'
+
+    delete: # need jwt
+      summary: board 도큐먼트 삭제
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: 삭제할 board 도큐먼트의 ObjectId
+          schema:
+            type: string
+      responses:
+        200:
+          description: 성공
+          content:
+            application/json:
+              $ref: '#/components/responses/SUCCESS'
+        400:
+          description: (Bad Request) 클라이언트 에러 발생
+          content:
+            application/json:
+              $ref: '#/components/responses/ERR_BAD_REQUEST'
+        401:
+          description: (Unauthorized) 인증 에러 발생
+        404:
+          description: (Not Found) 원하는 리소스를 제공할 수 없음
+          content:
+            application/json:
+              $ref: '#/components/responses/ERR_BAD_REQUEST'
+        500:
+          description: (Internal Server Error) 서버 에러 발생
+          content:
+            application/json:
+              $ref: '#/components/responses/ERR_INTERNAL_ERROR'
+
+  /boards/analysis:
+    get:
+      summary: board 통계 가져오기
+      responses:
+        200:
+          description: 성공
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message: 
+                    type: string
+                    example: success
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        boardCnt:
+                          type: integer
+                        likeCnt:
+                          type: integer
+                        username:
+                          type: string
+        500:
+          description: (Internal Server Error) 서버 에러 발생
+          content:
+            application/json:
+              $ref: '#/components/responses/ERR_INTERNAL_ERROR'
+
+  /boards/{id}/like: # need jwt
+    post:
+      summary: board 좋아요
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: 좋아요 할 board 도큐먼트의 ObjectId
+          schema:
+            type: string
+      responses:
+        200:
+          description: 성공
+          content:
+            application/json:
+              $ref: '#/components/responses/SUCCESS'
+        400:
+          description: (Bad Request) 클라이언트 에러 발생
+          content:
+            application/json:
+              $ref: '#/components/responses/ERR_BAD_REQUEST'
+        401:
+          description: (Unauthorized) 인증 에러 발생
+        404:
+          description: (Not Found) 원하는 리소스를 제공할 수 없음
+          content:
+            application/json:
+              $ref: '#/components/responses/ERR_BAD_REQUEST'
+        500:
+          description: (Internal Server Error) 서버 에러 발생
+          content:
+            application/json:
+              $ref: '#/components/responses/ERR_INTERNAL_ERROR'
+
+  /boards/{id}/like/cancel: # need jwt
+    delete:
+      summary: board 좋아요 취소
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: 좋아요 취소할 board 도큐먼트의 ObjectId
+          schema:
+            type: string
+      responses:
+        200:
+          description: 성공
+          content:
+            application/json:
+              $ref: '#/components/responses/SUCCESS'
+        400:
+          description: (Bad Request) 클라이언트 에러 발생
+          content:
+            application/json:
+              $ref: '#/components/responses/ERR_BAD_REQUEST'
+        401:
+          description: (Unauthorized) 인증 에러 발생
+        500:
+          description: (Internal Server Error) 서버 에러 발생
+          content:
+            application/json:
+              $ref: '#/components/responses/ERR_INTERNAL_ERROR'
+
+  /boards/{id}/report: # need jwt
+    post:
+      summary: board 신고
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: 신고할 board 도큐먼트의 ObjectId
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              propertise:
+                code:
+                  type: integer
+                  minimum: 1
+                value:
+                  type: string
+      responses:
+        200:
+          description: 성공
+          content:
+            application/json:
+              $ref: '#/components/responses/SUCCESS'
+        400:
+          description: (Bad Request) 클라이언트 에러 발생
+          content:
+            application/json:
+              $ref: '#/components/responses/ERR_BAD_REQUEST'
+        401:
+          description: (Unauthorized) 인증 에러 발생
+        500:
+          description: (Internal Server Error) 서버 에러 발생
+          content:
+            application/json:
+              $ref: '#/components/responses/ERR_INTERNAL_ERROR'
+
+  /boards/{id}/comment: # need jwt
+    post:
+      summary: board 댓글 추가
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: 댓글을 작성할 board 도큐먼트의 ObjectId
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              propertise:
+                value:
+                  type: string
+      responses:
+        200:
+          description: 성공
+          content:
+            application/json:
+              $ref: '#/components/responses/SUCCESS'
+        400:
+          description: (Bad Request) 클라이언트 에러 발생
+          content:
+            application/json:
+              $ref: '#/components/responses/ERR_BAD_REQUEST'
+        401:
+          description: (Unauthorized) 인증 에러 발생
+        500:
+          description: (Internal Server Error) 서버 에러 발생
+          content:
+            application/json:
+              $ref: '#/components/responses/ERR_INTERNAL_ERROR'
+
+  /boards/{boardId}/comment/{commentId}:
+    patch: # need jwt
+      summary: board 댓글 수정
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: boardId
+          in: path
+          required: true
+          description: 댓글을 작성된 board 도큐먼트의 ObjectId
+          schema:
+            type: string
+        - name: commentId
+          in: path
+          required: true
+          description: 수정할 comment 도큐먼트의 ObjectId
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              propertise:
+                value:
+                  type: string
+      responses:
+        200:
+          description: 성공
+          content:
+            application/json:
+              $ref: '#/components/responses/SUCCESS'
+        400:
+          description: (Bad Request) 클라이언트 에러 발생
+          content:
+            application/json:
+              $ref: '#/components/responses/ERR_BAD_REQUEST'
+        401:
+          description: (Unauthorized) 인증 에러 발생
+        500:
+          description: (Internal Server Error) 서버 에러 발생
+          content:
+            application/json:
+              $ref: '#/components/responses/ERR_INTERNAL_ERROR'
+
+    delete: # need jwt
+      summary: board 댓글 삭제
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: boardId
+          in: path
+          required: true
+          description: 댓글이 작성된 board 도큐먼트의 ObjectId
+          schema:
+            type: string
+        - name: commentId
+          in: path
+          required: true
+          description: 삭제할 comment 도큐먼트의 ObjectId
+          schema:
+            type: string
+      responses:
+        200:
+          description: 성공
+          content:
+            application/json:
+              $ref: '#/components/responses/SUCCESS'
+        400:
+          description: (Bad Request) 클라이언트 에러 발생
+          content:
+            application/json:
+              $ref: '#/components/responses/ERR_BAD_REQUEST'
+        401:
+          description: (Unauthorized) 인증 에러 발생
+        500:
+          description: (Internal Server Error) 서버 에러 발생
+          content:
+            application/json:
+              $ref: '#/components/responses/ERR_INTERNAL_ERROR'
+
+  /boards/{boardId}/comment/{commentId}/report:
+    post: # need jwt
+      summary: board 댓글 신고
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: boardId
+          in: path
+          required: true
+          description: 댓글이 작성된 board 도큐먼트의 ObjectId
+          schema:
+            type: string
+        - name: commentId
+          in: path
+          required: true
+          description: 신고할 comment 도큐먼트의 ObjectId
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              propertise:
+                code:
+                  type: integer
+                  minimum: 1
+                value:
+                  type: string
+      responses:
+        200:
+          description: 성공
+          content:
+            application/json:
+              $ref: '#/components/responses/SUCCESS'
+        400:
+          description: (Bad Request) 클라이언트 에러 발생
+          content:
+            application/json:
+              $ref: '#/components/responses/ERR_BAD_REQUEST'
+        401:
+          description: (Unauthorized) 인증 에러 발생
+        500:
+          description: (Internal Server Error) 서버 에러 발생
+          content:
+            application/json:
+              $ref: '#/components/responses/ERR_INTERNAL_ERROR'
+
+  /files:
+    get:
+      summary: file 컬렉션 가져오기
+      responses:
+        200:
+          description: 성공
+          content:
+            application/json:
+              $ref: '#/components/responses/SUCCESS'
+        500:
+          description: (Internal Server Error) 서버 에러 발생
+          content:
+            application/json:
+              $ref: '#/components/responses/ERR_INTERNAL_ERROR'
+
+  /files/download/{id}:
+    get:
+      summary: file 도큐먼트 가져오기
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: 가져올 file 도큐먼트의 ObjectId
+          schema:
+            type: string
+      responses:
+        200:
+          description: 성공
+          content:
+            application/json:
+              $ref: '#/components/responses/SUCCESS'
+        400:
+          description: (Bad Request) 클라이언트 에러 발생
+          content:
+            application/json:
+              $ref: '#/components/responses/ERR_BAD_REQUEST'
+        500:
+          description: (Internal Server Error) 서버 에러 발생
+          content:
+            application/json:
+              $ref: '#/components/responses/ERR_INTERNAL_ERROR'
+
+  /files/upload: # nedd jwt
+    post:
+      summary: file 도큐먼트 추가
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              propertise:
+                newFile:
+                  type: string
+                  format: binary
+      responses:
+        200:
+          description: 성공
+          content:
+            application/json:
+              $ref: '#/components/responses/SUCCESS'
+        400:
+          description: (Bad Request) 클라이언트 에러 발생
+          content:
+            application/json:
+              $ref: '#/components/responses/ERR_BAD_REQUEST'
+        401:
+          description: (Unauthorized) 인증 에러 발생
+        500:
+          description: (Internal Server Error) 서버 에러 발생
+          content:
+            application/json:
+              $ref: '#/components/responses/ERR_INTERNAL_ERROR'
+
+  /fonts:
+    get:
+      summary: font 컬렉션 가져오기
+      responses:
+        200:
+          description: 성공
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                  data:
+                    type: array
+                    items: [
+                      {
+                          "_id": "5f50d4677d3abb2adbbaf0ff",
+                          "fileName": "DX3G1Std-B.otf",
+                          "postscriptName": "DX3G1Std-B",
+                          "fullName": "DX3G1Std Bold",
+                          "familyName": "DX3G1Std Bold",
+                          "subfamilyName": "Regular",
+                          "copyright": "Copyright 2011 DXKorea Inc. All rights reserved.",
+                          "version": "Version 1.0",
+                          "__v": 0
+                      },
+                      {
+                          "_id": "5f50d4677d3abb2adbbaf100",
+                          "fileName": "HoonSaemaulundongR.ttf",
+                          "postscriptName": "HoonSaemaR",
+                          "fullName": "1HoonSaemaulundong Regular",
+                          "familyName": "1HoonSaemaulundong R",
+                          "subfamilyName": "Regular",
+                          "copyright": "Copyright (c) 2013 HOON DESIGN. All rights reserved.\r\nwww.hoondesign.co.kr / Tel 070-8278-1187\r\nwebmaster@hoondesign.co.kr",
+                          "version": "Version 1.0",
+                          "__v": 0
+                      },
+                      {
+                          "_id": "5f50d4677d3abb2adbbaf101",
+                          "fileName": "Meslo LG M Regular for Powerline.ttf",
+                          "postscriptName": "MesloLGMForPowerline-Regular",
+                          "fullName": "Meslo LG M Regular for Powerline",
+                          "familyName": "Meslo LG M for Powerline",
+                          "subfamilyName": "Regular",
+                          "copyright": "Copyright © 2009 Apple Inc. Copyright ©  2006 by Tavmjong Bah. Copyright © 2003 by Bitstream, Inc. All Rights Reserved.",
+                          "version": "1.210",
+                          "__v": 0
+                      }
+                    ]
+        500:
+          description: (Internal Server Error) 서버 에러 발생
+          content:
+            application/json:
+              $ref: '#/components/responses/ERR_INTERNAL_ERROR'
+
+  /fonts/upload:
+    post:
+      summary: font 도큐먼트 추가
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              propertise:
+                newFile:
+                  type: string
+                  format: binary
+      responses:
+        200:
+          description: 성공
+          content:
+            application/json:
+              $ref: '#/components/responses/SUCCESS'
+        400:
+          description: (Bad Request) 클라이언트 에러 발생
+          content:
+            application/json:
+              $ref: '#/components/responses/ERR_BAD_REQUEST'
+        401:
+          description: (Unauthorized) 인증 에러 발생
+        500:
+          description: (Internal Server Error) 서버 에러 발생
+          content:
+            application/json:
+              $ref: '#/components/responses/ERR_INTERNAL_ERROR'
+
+  /users/find-password:
+    post:
+      summary: 비밀번호 찾기(이메일 제출)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              propertise:
+                email:
+                  type: string
+                  format: email
+      responses:
+        200:
+          description: 성공
+          content:
+            application/json:
+              $ref: '#/components/responses/SUCCESS'
+        400:
+          description: (Bad Request) 클라이언트 에러 발생
+          content:
+            application/json:
+              $ref: '#/components/responses/ERR_BAD_REQUEST'
+        500:
+          description: (Internal Server Error) 서버 에러 발생
+          content:
+            application/json:
+              $ref: '#/components/responses/ERR_INTERNAL_ERROR'
+
+  /users/password:
+    patch: # need jwt
+      summary: 회원의 password 변경
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              propertise:
+                oldPwd:
+                  type: string
+                  format: password
+                newPwd:
+                  type: string
+                  format: password
+      responses:
+        200:
+          description: 성공
+          content:
+            application/json:
+              $ref: '#/components/responses/SUCCESS'
+        400:
+          description: (Bad Request) 클라이언트 에러 발생
+          content:
+            application/json:
+              $ref: '#/components/responses/ERR_BAD_REQUEST'
+        401:
+          description: (Unauthorized) 인증 에러 발생
+        500:
+          description: (Internal Server Error) 서버 에러 발생
+          content:
+            application/json:
+              $ref: '#/components/responses/ERR_INTERNAL_ERROR'
+
+  /users/nickname:
+    patch: # need jwt
+      summary: 회원의 nickname 변경
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              propertise:
+                nickname:
+                  type: string
+      responses:
+        200:
+          description: 성공
+          content:
+            application/json:
+              $ref: '#/components/responses/SUCCESS'
+        400:
+          description: (Bad Request) 클라이언트 에러 발생
+          content:
+            application/json:
+              $ref: '#/components/responses/ERR_BAD_REQUEST'
+        401:
+          description: (Unauthorized) 인증 에러 발생
+        500:
+          description: (Internal Server Error) 서버 에러 발생
+          content:
+            application/json:
+              $ref: '#/components/responses/ERR_INTERNAL_ERROR'
+
+  /users/info:
+    patch: # need jwt
+      summary: 회원정보 변경
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              propertise:
+                address:
+                  type: string
+                birthDay:
+                  type: string
+                  format: date
       responses:
         200:
           description: 성공

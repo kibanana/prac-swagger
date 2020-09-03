@@ -32,17 +32,16 @@ app.use('/', express.static(path.join(__dirname)))
 app.use('/', swaggerUi.serve)
 app.get('/api-docs',
 async (req, res, next) => {
-  swaggerPathsCreator()
-  .then(() => asyncReadFile('./swagger/openapi.yaml', 'utf8'))
-  .then((swaggerConfigYaml) => {
-    // 여기서 value로 처리하니까 계속 문제가 생김 (두 번으로 중복되는 yaml 값이 들어감)
-    // req.config = swaggerConfigYaml
-    req.config = jsYaml.safeLoad(swaggerConfigYaml)
-    next()
-  })
-  .catch(err => console.log(err))
+  asyncReadFile('./swagger/openapi.yaml', 'utf8')
+    .then((swaggerConfigYaml) => {
+      // 여기서 value로 처리하니까 계속 문제가 생김 (두 번으로 중복되는 yaml 값이 들어감)
+      // req.config = swaggerConfigYaml
+      req.config = jsYaml.safeLoad(swaggerConfigYaml)
+      next()
+    })
+    .catch(err => console.log(err))
 }, (req, res, next) => {
-  // swaggerUi.setup(req.config);
+  // swaggerUi.setup(req.config)
   res.json(req.config)
 })
 const server = http.createServer(app)
