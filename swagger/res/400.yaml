@@ -1,11 +1,12 @@
-description: (Bad Request) 클라이언트 에러 발생
-  content:
-    schema:
-      type: object
-      properties:
-        message:
-          type: string
-        err_code: 
-          type: string
-        description:
-          type: string
+schema:
+  type: object
+  properties:
+    message: 
+      type: string
+      example: error
+    error_code:
+      type: string
+      example: ERR_BAD_REQUEST
+    description:
+      type: string
+      example: '잘못된 요청입니다.'

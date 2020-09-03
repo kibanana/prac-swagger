@@ -1,7 +1,12 @@
-description: (Internal Server Error) 서버 에러 발생
-  content:
-    schema:
-      type: object
-      properties:
-        message:
-          type: string
+schema:
+  type: object
+  properties:
+    message: 
+      type: string
+      example: error
+    error_code:
+      type: string
+      example: ERR_INTERNAL_ERROR
+    description:
+      type: string
+      example: '서버에 오류가 발생했습니다.'

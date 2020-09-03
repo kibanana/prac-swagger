@@ -1,11 +1,12 @@
-description: Not Found 에러 발생(요청한 리소스를 찾을 수 없음)
-  content:
-    schema:
-      type: object
-      properties:
-        message:
-          type: string
-        err_code: 
-          type: string
-        description:
-          type: string
+schema:
+  type: object
+  properties:
+    message: 
+      type: string
+      example: error
+    error_code:
+      type: string
+      example: ERR_NOT_FOUND
+    description:
+      type: string
+      example: '데이터를 찾을 수 없습니다.'

@@ -11,20 +11,47 @@ servers:
         default: 3000
       basePath:
         default: v1
-paths: # object
-  # $ref: ./swagger/paths/auth.yaml
+security:
+  - BearerAuth: []
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  responses:
+    SUCCESS:
+      $ref: ./swagger/res/200.yaml
+    ERR_BAD_REQUEST:
+      $ref: ./swagger/res/400.yaml
+    ERROR_NOT_FOUND:
+      $ref: ./swagger/res/404.yaml
+    ERR_INTERNAL_ERROR:
+      $ref: ./swagger/res/500.yaml
+  schemas:
+    Board:
+      $ref: ./swagger/definitions/Board.yaml
+    Code:
+      $ref: ./swagger/definitions/Code.yaml
+    File:
+      $ref: ./swagger/definitions/File.yaml
+    Font:
+      $ref: ./swagger/definitions/Font.yaml
+    User:
+      $ref: ./swagger/definitions/User.yaml
+paths:
   /boards:
     get:
       summary: board 컬렉션 가져오기
       parameters:
         - name: searchString
           in: query
-          description: 검색을 위한 문자열
+          description: 검색어
           schema:
             type: string
         - name: sortKey
           in: query
-          description: 정렬을 위한 키
+          description: 정렬 키
           schema:
             type: integer
             minimum: 1
@@ -38,21 +65,55 @@ paths: # object
                 properties:
                   message:
                     type: string
+                    example: success
                   data:
                     type: array
-                    items:
-                      $ref: ../definitions/Board.yaml
+                    example: [
+                      {
+                        "_id": "5ef593a05304681d19bd3a4e",
+                        "userId": "5ef31dace482ad8976aeb211",
+                        "title": "wfwe",
+                        "createdAt": "2020-06-26T06:20:16.160Z",
+                        "likes": 0,
+                        "reports": 0,
+                        "isDeleted": false,
+                        "username": "someone"
+                      },
+                      {
+                        "_id": "5ef592a55304681d19bd3a4d",
+                        "userId": "5ef31dace482ad8976aeb211",
+                        "title": "we",
+                        "createdAt": "2020-06-26T06:16:05.208Z",
+                        "likes": 0,
+                        "reports": 0,
+                        "isDeleted": false,
+                        "username": "someone"
+                      },
+                      {
+                        "_id": "5edd9db4f2f1cc1fb8bef671",
+                        "userId": "5ed9f4d01ca3427b81e17859",
+                        "title": "Yes Nope No No Yes",
+                        "createdAt": "2020-06-08T02:08:52.519Z",
+                        "likes": 0,
+                        "reports": 0,
+                        "isDeleted": false,
+                        "username": "someone"
+                      }
+                    ]
         500:
-          $ref: '#/components/res/500.yaml'
+          description: (Internal Server Error) 서버 에러 발생
+          content:
+            application/json:
+              $ref: '#/components/responses/ERR_INTERNAL_ERROR'
     
-    post: # need jwt
+    post:
       summary: board 도큐먼트 추가
       security:
         - BearerAuth: []
       requestBody:
         required: true
         content:
-          application/x-www-form-urlencoded:
+          application/json:
             schema:
               type: object
               propertise:
@@ -65,44 +126,16 @@ paths: # object
           description: 성공
           content:
             application/json:
-              schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-                  data:
-                    type: string
+              $ref: '#/components/responses/SUCCESS'
         400:
-          $ref: '#/components/res/400.yaml'
+          description: (Bad Request) 클라이언트 에러 발생
+          content:
+            application/json:
+              $ref: '#/components/responses/ERR_BAD_REQUEST'
         401:
-          $ref: '#/components/res/401.yaml'
+          description: (Unauthorized) 인증 에러 발생
         500:
-          $ref: '#/components/res/500.yaml'
-security:
-  - BearerAuth: []
-components:
-  securitySchemes:
-    BearerAuth:
-      type: http
-      scheme: bearer
-      bearerFormat: JWT
-  res:
-    '400':
-      $ref: ./swagger/res/400.yaml
-    '401':
-      $ref: ./swagger/res/401.yaml
-    '404':
-      $ref: ./swagger/res/404.yaml
-    '500':
-      $ref: ./swagger/res/500.yaml
-  schemas:
-    Board:
-      $ref: ./swagger/definitions/Board.yaml
-    Code:
-      $ref: ./swagger/definitions/Code.yaml
-    File:
-      $ref: ./swagger/definitions/File.yaml
-    Font:
-      $ref: ./swagger/definitions/Font.yaml
-    User:
-      $ref: ./swagger/definitions/User.yaml
+          description: (Internal Server Error) 서버 에러 발생
+          content:
+            application/json:
+              $ref: '#/components/responses/ERR_INTERNAL_ERROR'

@@ -33,9 +33,7 @@ app.use('/', swaggerUi.serve)
 app.get('/api-docs',
 async (req, res, next) => {
   swaggerPathsCreator()
-  .then(() => {
-    return asyncReadFile('./swagger/openapi.yaml', 'utf8')
-  })
+  .then(() => asyncReadFile('./swagger/openapi.yaml', 'utf8'))
   .then((swaggerConfigYaml) => {
     // 여기서 value로 처리하니까 계속 문제가 생김 (두 번으로 중복되는 yaml 값이 들어감)
     // req.config = swaggerConfigYaml
