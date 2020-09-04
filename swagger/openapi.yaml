@@ -361,7 +361,24 @@ paths:
           description: 성공
           content:
             application/json:
-              $ref: '#/components/responses/SUCCESS'
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: success
+                  data:
+                    type: object
+                    example: {
+                      "_id": "5eda04e69014168b95dc3118",
+                      "userId": "5ed9f4d01ca3427b81e17859",
+                      "title": "ㄲㄲㄲ",
+                      "body": "뚜루룰루루루루루루루~~~",
+                      "createdAt": "2020-06-05T08:40:06.001Z",
+                      "likes": [],
+                      "reports": [],
+                      "comments": []
+                    }
         400:
           description: (Bad Request) 클라이언트 에러 발생
           content:
