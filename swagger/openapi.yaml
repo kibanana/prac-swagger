@@ -19,15 +19,6 @@ components:
       type: http
       scheme: bearer
       bearerFormat: JWT
-  responses:
-    SUCCESS:
-      $ref: ./swagger/res/200.yaml
-    ERR_BAD_REQUEST:
-      $ref: ./swagger/res/400.yaml
-    ERROR_NOT_FOUND:
-      $ref: ./swagger/res/404.yaml
-    ERR_INTERNAL_ERROR:
-      $ref: ./swagger/res/500.yaml
   schemas:
     Board:
       $ref: ./swagger/definitions/Board.yaml
@@ -39,35 +30,61 @@ components:
       $ref: ./swagger/definitions/Font.yaml
     User:
       $ref: ./swagger/definitions/User.yaml
+  responses:
+    SUCCESS:
+      $ref: ./swagger/res/200.yaml
+    ERR_BAD_REQUEST:
+      $ref: ./swagger/res/400.yaml
+    ERROR_NOT_FOUND:
+      $ref: ./swagger/res/404.yaml
+    ERR_INTERNAL_ERROR:
+      $ref: ./swagger/res/500.yaml
 paths:
+  # /auth
   /auth/sign-up:
     post:
-      description: 회원가입
+      summary: 회원가입
       requestBody:
         required: true
         content:
           application/json:
             schema:
               type: object
-              propertise:
+              properties:
                 email:
                   type: string
                   format: email
-                  example: kyw017763@gmail.com
                 password:
                   type: string
                   format: password
-                  example: asdf1234
                 nickname:
                   type: string
-                  example: cat
                 address:
                   type: string
-                  example: cat's house
                 birthDay:
                   type: string
                   format: date
-                  example: 2001-06-30
+              required:
+                - email
+                - password
+                - nickname
+                - address
+                - birthDay
+            examples:
+              200:
+                value:
+                  email: "kyw0177@gmail.com"
+                  password: "asdf1234*"
+                  nickname: "cat"
+                  address: "cat's house"
+                  birthDay: "2001-01-31"
+              400:
+                value:
+                  email: ""
+                  password: ""
+                  nickname: "cat"
+                  address: "cat's house"
+                  birthDay: "2001-01-31"
       responses:
         200:
           description: 성공
@@ -83,7 +100,7 @@ paths:
           description: (Bad Request) 클라이언트 에러 발생
           content:
             application/json:
-              $ref: '#/components/responses/ERR_INTERNAL_ERROR'
+              $ref: '#/components/responses/ERR_BAD_REQUEST'
         500:
           description: (Internal Server Error) 서버 에러 발생
           content:
@@ -92,40 +109,109 @@ paths:
 
   /auth/sign-in:
     post:
-      description: 로그인
+      summary: 로그인
       requestBody:
         requied: true
         content:
           application/json:
             schema:
               type: object
-            propertise:
-              email:
-                type: string
-                format: email
-                example: kyw017763@gmail.com
-              password:
-                type: string
-                format: password
-                example: asdf1234
+              properties:
+                email:
+                  type: string
+                  format: email
+                  example: kyw017763@gmail.com
+                password:
+                  type: string
+                  format: password
+                  example: asdf1234
+            examples:
+              200:
+                value:
+                  email: "kyw0177@gmail.com"
+                  password: "asdf1234*"
+            
       responses:
         200:
           description: 성공
           content:
             application/json:
-              schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-                    example: success
+              $ref: '#/components/responses/SUCCESS'
         400:
           description: (Bad Request) 클라이언트 에러 발생
           content:
             application/json:
-              $ref: '#/components/responses/ERR_INTERNAL_ERROR'
+              $ref: '#/components/responses/ERR_BAD_REQUEST'
         401:
           description: (Unauthorized) 인증 에러 발생
+        500:
+          description: (Internal Server Error) 서버 에러 발생
+          content:
+            application/json:
+              $ref: '#/components/responses/ERR_INTERNAL_ERROR'
+
+  /auth/sign-up/verify:
+    post:
+      summary: 인증 이메일 보내기
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  format: email
+              required:
+                - email
+            examples:
+              200:
+                value:
+                  email: "kyw0177@gmail.com"
+      responses:
+        200:
+          description: 성공
+          content:
+            application/json:
+              $ref: '#/components/responses/SUCCESS'
+        400:
+          description: (Bad Request) 클라이언트 에러 발생
+          content:
+            application/json:
+              $ref: '#/components/responses/ERR_BAD_REQUEST'
+        500:
+          description: (Internal Server Error) 서버 에러 발생
+          content:
+            application/json:
+              $ref: '#/components/responses/ERR_INTERNAL_ERROR'
+    get:
+      summary: 이메일 인증
+      parameters:
+        - in: query
+          name: email
+          description: 인증코드를 수신한 이메일
+          schema:
+            type: string
+            format: email
+          required: true
+        - in: query
+          name: code
+          description: 인증코드
+          schema:
+            type: string
+          required: true
+      responses:
+        200:
+          description: 성공
+          content:
+            application/json:
+              $ref: '#/components/responses/SUCCESS'
+        400:
+          description: (Bad Request) 클라이언트 에러 발생
+          content:
+            application/json:
+              $ref: '#/components/responses/ERR_BAD_REQUEST'
         500:
           description: (Internal Server Error) 서버 에러 발생
           content:
@@ -133,8 +219,8 @@ paths:
               $ref: '#/components/responses/ERR_INTERNAL_ERROR'
 
   /auth/jwt-verify:
-    post:
-      description: JWT 토큰 검증
+    post: # need jwt
+      summary: JWT 토큰 검증
       security:
         - BearerAuth: []
       responses:
@@ -142,12 +228,7 @@ paths:
           description: 성공
           content:
             application/json:
-              schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-                    example: success
+              $ref: '#/components/responses/SUCCESS'
         401:
           description: (Unauthorized) 인증 에러 발생
         500:
@@ -156,17 +237,18 @@ paths:
             application/json:
               $ref: '#/components/responses/ERR_INTERNAL_ERROR'
 
+  # boards
   /boards:
     get:
       summary: board 컬렉션 가져오기
       parameters:
-        - name: searchString
-          in: query
+        - in: query
+          name: searchString
           description: 검색어
           schema:
             type: string
-        - name: sortKey
-          in: query
+        - in: query
+          name: sortKey
           description: 정렬 키
           schema:
             type: integer
@@ -232,11 +314,19 @@ paths:
           application/json:
             schema:
               type: object
-              propertise:
+              properties:
                 title:
                   type: string
                 body:
                   type: string
+              required:
+                - title
+                - body
+            examples:
+              200:
+                value:
+                  title: "테스트 글 제목"
+                  body: "테스트 글 내용"
       responses:
         200:
           description: 성공
@@ -260,8 +350,8 @@ paths:
     get:
       summary: board 도큐먼트 가져오기
       parameters:
-        - name: id
-          in: path
+        - in: path
+          name: id
           required: true
           description: 가져올 board 도큐먼트의 ObjectId
           schema:
@@ -281,7 +371,7 @@ paths:
           description: (Not Found) 원하는 리소스를 제공할 수 없음
           content:
             application/json:
-              $ref: '#/components/responses/ERR_BAD_REQUEST'
+              $ref: '#/components/responses/ERROR_NOT_FOUND'
         500:
           description: (Internal Server Error) 서버 에러 발생
           content:
@@ -293,8 +383,8 @@ paths:
       security:
         - BearerAuth: []
       parameters:
-        - name: id
-          in: path
+        - in: path
+          name: id
           required: true
           description: 수정할 board 도큐먼트의 ObjectId
           schema:
@@ -305,11 +395,19 @@ paths:
           application/json:
             schema:
               type: object
-              propertise:
+              properties:
                 title:
                   type: string
                 body:
                   type: string
+              required:
+                - title
+                - body
+            examples:
+              200:
+                value:
+                  title: "테스트 글 제목(수정)"
+                  body: "테스트 글 내용(수정)"
       responses:
           200:
             description: 성공
@@ -327,7 +425,7 @@ paths:
             description: (Not Found) 원하는 리소스를 제공할 수 없음
             content:
               application/json:
-                $ref: '#/components/responses/ERR_BAD_REQUEST'
+                $ref: '#/components/responses/ERROR_NOT_FOUND'
           500:
             description: (Internal Server Error) 서버 에러 발생
             content:
@@ -339,8 +437,8 @@ paths:
       security:
         - BearerAuth: []
       parameters:
-        - name: id
-          in: path
+        - in: path
+          name: id
           required: true
           description: 삭제할 board 도큐먼트의 ObjectId
           schema:
@@ -362,7 +460,7 @@ paths:
           description: (Not Found) 원하는 리소스를 제공할 수 없음
           content:
             application/json:
-              $ref: '#/components/responses/ERR_BAD_REQUEST'
+              $ref: '#/components/responses/ERROR_NOT_FOUND'
         500:
           description: (Internal Server Error) 서버 에러 발생
           content:
@@ -406,8 +504,8 @@ paths:
       security:
         - BearerAuth: []
       parameters:
-        - name: id
-          in: path
+        - in: path
+          name: id
           required: true
           description: 좋아요 할 board 도큐먼트의 ObjectId
           schema:
@@ -429,7 +527,7 @@ paths:
           description: (Not Found) 원하는 리소스를 제공할 수 없음
           content:
             application/json:
-              $ref: '#/components/responses/ERR_BAD_REQUEST'
+              $ref: '#/components/responses/ERROR_NOT_FOUND'
         500:
           description: (Internal Server Error) 서버 에러 발생
           content:
@@ -442,8 +540,8 @@ paths:
       security:
         - BearerAuth: []
       parameters:
-        - name: id
-          in: path
+        - in: path
+          name: id
           required: true
           description: 좋아요 취소할 board 도큐먼트의 ObjectId
           schema:
@@ -473,8 +571,8 @@ paths:
       security:
         - BearerAuth: []
       parameters:
-        - name: id
-          in: path
+        - in: path
+          name: id
           required: true
           description: 신고할 board 도큐먼트의 ObjectId
           schema:
@@ -485,12 +583,18 @@ paths:
           application/json:
             schema:
               type: object
-              propertise:
+              properties:
                 code:
                   type: integer
                   minimum: 1
                 value:
                   type: string
+              required:
+                - code
+            examples:
+              200:
+                value:
+                  code: 1
       responses:
         200:
           description: 성공
@@ -516,8 +620,8 @@ paths:
       security:
         - BearerAuth: []
       parameters:
-        - name: id
-          in: path
+        - in: path
+          name: id
           required: true
           description: 댓글을 작성할 board 도큐먼트의 ObjectId
           schema:
@@ -528,9 +632,15 @@ paths:
           application/json:
             schema:
               type: object
-              propertise:
+              properties:
                 value:
                   type: string
+              required:
+                - value
+            examples:
+              200:
+                value:
+                  value: "테스트 댓글"
       responses:
         200:
           description: 성공
@@ -556,14 +666,14 @@ paths:
       security:
         - BearerAuth: []
       parameters:
-        - name: boardId
-          in: path
+        - in: path
+          name: boardId
           required: true
           description: 댓글을 작성된 board 도큐먼트의 ObjectId
           schema:
             type: string
-        - name: commentId
-          in: path
+        - in: path
+          name: commentId
           required: true
           description: 수정할 comment 도큐먼트의 ObjectId
           schema:
@@ -574,9 +684,15 @@ paths:
           application/json:
             schema:
               type: object
-              propertise:
+              properties:
                 value:
                   type: string
+              required:
+                - value
+            examples:
+              200:
+                value:
+                  value: "테스트 댓글"
       responses:
         200:
           description: 성공
@@ -601,14 +717,14 @@ paths:
       security:
         - BearerAuth: []
       parameters:
-        - name: boardId
-          in: path
+        - in: path
+          name: boardId
           required: true
           description: 댓글이 작성된 board 도큐먼트의 ObjectId
           schema:
             type: string
-        - name: commentId
-          in: path
+        - in: path
+          name: commentId
           required: true
           description: 삭제할 comment 도큐먼트의 ObjectId
           schema:
@@ -638,14 +754,14 @@ paths:
       security:
         - BearerAuth: []
       parameters:
-        - name: boardId
-          in: path
+        - in: path
+          name: boardId
           required: true
           description: 댓글이 작성된 board 도큐먼트의 ObjectId
           schema:
             type: string
-        - name: commentId
-          in: path
+        - in: path
+          name: commentId
           required: true
           description: 신고할 comment 도큐먼트의 ObjectId
           schema:
@@ -656,12 +772,18 @@ paths:
           application/json:
             schema:
               type: object
-              propertise:
+              properties:
                 code:
                   type: integer
                   minimum: 1
                 value:
                   type: string
+              required:
+                - code
+            examples:
+              200:
+                value:
+                  code: 1
       responses:
         200:
           description: 성공
@@ -681,6 +803,7 @@ paths:
             application/json:
               $ref: '#/components/responses/ERR_INTERNAL_ERROR'
 
+  # /files
   /files:
     get:
       summary: file 컬렉션 가져오기
@@ -700,8 +823,8 @@ paths:
     get:
       summary: file 도큐먼트 가져오기
       parameters:
-        - name: id
-          in: path
+        - in: path
+          name: id
           required: true
           description: 가져올 file 도큐먼트의 ObjectId
           schema:
@@ -723,7 +846,7 @@ paths:
             application/json:
               $ref: '#/components/responses/ERR_INTERNAL_ERROR'
 
-  /files/upload: # nedd jwt
+  /files/upload: # need jwt
     post:
       summary: file 도큐먼트 추가
       security:
@@ -734,7 +857,7 @@ paths:
           multipart/form-data:
             schema:
               type: object
-              propertise:
+              properties:
                 newFile:
                   type: string
                   format: binary
@@ -757,6 +880,7 @@ paths:
             application/json:
               $ref: '#/components/responses/ERR_INTERNAL_ERROR'
 
+  # /fonts
   /fonts:
     get:
       summary: font 컬렉션 가져오기
@@ -772,7 +896,7 @@ paths:
                     type: string
                   data:
                     type: array
-                    items: [
+                    example: [
                       {
                           "_id": "5f50d4677d3abb2adbbaf0ff",
                           "fileName": "DX3G1Std-B.otf",
@@ -824,7 +948,7 @@ paths:
           multipart/form-data:
             schema:
               type: object
-              propertise:
+              properties:
                 newFile:
                   type: string
                   format: binary
@@ -847,6 +971,7 @@ paths:
             application/json:
               $ref: '#/components/responses/ERR_INTERNAL_ERROR'
 
+  # /users
   /users/find-password:
     post:
       summary: 비밀번호 찾기(이메일 제출)
@@ -856,10 +981,16 @@ paths:
           application/json:
             schema:
               type: object
-              propertise:
+              properties:
                 email:
                   type: string
                   format: email
+              required:
+                - email
+            examples:
+              200:
+                value:
+                  email: "kyw0177@gmail.com"
       responses:
         200:
           description: 성공
@@ -888,13 +1019,21 @@ paths:
           application/json:
             schema:
               type: object
-              propertise:
+              properties:
                 oldPwd:
                   type: string
                   format: password
                 newPwd:
                   type: string
                   format: password
+              required:
+                - oldPwd
+                - newPwd
+            examples:
+              200:
+                value:
+                  oldPwd: "asdf1234*"
+                  newPwd: "asdf1234"
       responses:
         200:
           description: 성공
@@ -925,9 +1064,15 @@ paths:
           application/json:
             schema:
               type: object
-              propertise:
+              properties:
                 nickname:
                   type: string
+              required:
+                - nickname
+            examples:
+              200:
+                value:
+                  nickname: "테스트용 닉네임"
       responses:
         200:
           description: 성공
@@ -958,12 +1103,23 @@ paths:
           application/json:
             schema:
               type: object
-              propertise:
+              properties:
                 address:
                   type: string
                 birthDay:
                   type: string
                   format: date
+            examples:
+              "200 - 1":
+                value:
+                  address: "테스트용 닉네임"
+                  birthDay: "2001-01-01"
+              "200 - 2":
+                value:
+                  address: "테스트용 닉네임"
+              "200 - 3":
+                value:
+                  birthDay: "2001-01-01"
       responses:
         200:
           description: 성공
