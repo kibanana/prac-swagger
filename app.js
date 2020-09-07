@@ -44,6 +44,52 @@ async (req, res, next) => {
   // swaggerUi.setup(req.config)
   res.json(req.config)
 })
+
+app.get('/example',
+async (req, res, next) => {
+  asyncReadFile('./swagger/example.yaml', 'utf8')
+    .then((swaggerConfigYaml) => {
+      // 여기서 value로 처리하니까 계속 문제가 생김 (두 번으로 중복되는 yaml 값이 들어감)
+      // req.config = swaggerConfigYaml
+      req.config = jsYaml.safeLoad(swaggerConfigYaml)
+      next()
+    })
+    .catch(err => console.log(err))
+}, (req, res, next) => {
+  // swaggerUi.setup(req.config)
+  res.json(req.config)
+})
+
+app.get('/link',
+async (req, res, next) => {
+  asyncReadFile('./swagger/link.yaml', 'utf8')
+    .then((swaggerConfigYaml) => {
+      // 여기서 value로 처리하니까 계속 문제가 생김 (두 번으로 중복되는 yaml 값이 들어감)
+      // req.config = swaggerConfigYaml
+      req.config = jsYaml.safeLoad(swaggerConfigYaml)
+      next()
+    })
+    .catch(err => console.log(err))
+}, (req, res, next) => {
+  // swaggerUi.setup(req.config)
+  res.json(req.config)
+})
+
+app.get('/petstore',
+async (req, res, next) => {
+  asyncReadFile('./swagger/petstore.yaml', 'utf8')
+    .then((swaggerConfigYaml) => {
+      // 여기서 value로 처리하니까 계속 문제가 생김 (두 번으로 중복되는 yaml 값이 들어감)
+      // req.config = swaggerConfigYaml
+      req.config = jsYaml.safeLoad(swaggerConfigYaml)
+      next()
+    })
+    .catch(err => console.log(err))
+}, (req, res, next) => {
+  // swaggerUi.setup(req.config)
+  res.json(req.config)
+})
+
 const server = http.createServer(app)
 const io = require('socket.io')(server)
 
