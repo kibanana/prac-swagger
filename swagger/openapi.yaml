@@ -59,6 +59,7 @@ paths:
   # /auth
   /auth/sign-up:
     post:
+      tags: ['Auth']
       summary: 회원가입
       requestBody:
         required: true
@@ -129,6 +130,7 @@ paths:
 
   /auth/sign-in:
     post:
+      tags: ['Auth']
       summary: 로그인
       requestBody:
         requied: true
@@ -168,6 +170,7 @@ paths:
 
   /auth/sign-up/verify:
     post:
+      tags: ['Auth']
       summary: 인증 이메일 보내기
       requestBody:
         required: true
@@ -205,6 +208,7 @@ paths:
                 ERR_INTERNAL_ERROR:
                   $ref: '#/components/responses/ERR_INTERNAL_ERROR'
     get:
+      tags: ['Auth']
       summary: 이메일 인증
       parameters:
         - in: query
@@ -241,7 +245,8 @@ paths:
                   $ref: '#/components/responses/ERR_INTERNAL_ERROR'
 
   /auth/jwt-verify:
-    post: # need jwt
+    post:
+      tags: ['Auth']
       summary: JWT 토큰 검증
       security:
         - BearerAuth: []
@@ -264,6 +269,7 @@ paths:
   # boards
   /boards:
     get:
+      tags: ['Board']
       summary: board 컬렉션 가져오기
       parameters:
         - in: query
@@ -325,6 +331,7 @@ paths:
                   $ref: '#/components/responses/ERR_INTERNAL_ERROR'
     
     post:
+      tags: ['Board']
       summary: board 도큐먼트 추가
       security:
         - BearerAuth: []
@@ -371,6 +378,7 @@ paths:
 
   /boards/{id}:
     get:
+      tags: ['Board']
       summary: board 도큐먼트 가져오기
       parameters:
         - in: path
@@ -416,7 +424,8 @@ paths:
                 ERR_INTERNAL_ERROR:
                   $ref: '#/components/responses/ERR_INTERNAL_ERROR'
 
-    patch: # need jwt
+    patch:
+      tags: ['Board']
       summary: board 도큐먼트 수정
       security:
         - BearerAuth: []
@@ -473,7 +482,8 @@ paths:
                 ERR_INTERNAL_ERROR:
                   $ref: '#/components/responses/ERR_INTERNAL_ERROR'
 
-    delete: # need jwt
+    delete:
+      tags: ['Board']
       summary: board 도큐먼트 삭제
       security:
         - BearerAuth: []
@@ -514,6 +524,7 @@ paths:
 
   /boards/analysis:
     get:
+      tags: ['Board']
       summary: board 통계 가져오기
       responses:
         200:
@@ -560,8 +571,9 @@ paths:
                 ERR_INTERNAL_ERROR:
                   $ref: '#/components/responses/ERR_INTERNAL_ERROR'
 
-  /boards/{id}/like: # need jwt
+  /boards/{id}/like:
     post:
+      tags: ['Board']
       summary: board 좋아요
       security:
         - BearerAuth: []
@@ -594,8 +606,9 @@ paths:
                 ERR_INTERNAL_ERROR:
                   $ref: '#/components/responses/ERR_INTERNAL_ERROR'
 
-  /boards/{id}/like/cancel: # need jwt
+  /boards/{id}/like/cancel:
     delete:
+      tags: ['Board']
       summary: board 좋아요 취소
       security:
         - BearerAuth: []
@@ -628,8 +641,9 @@ paths:
                 ERR_INTERNAL_ERROR:
                   $ref: '#/components/responses/ERR_INTERNAL_ERROR'
 
-  /boards/{id}/report: # need jwt
+  /boards/{id}/report:
     post:
+      tags: ['Board']
       summary: board 신고
       security:
         - BearerAuth: []
@@ -648,11 +662,11 @@ paths:
               type: object
               properties:
                 code:
-                  description: 'You can use it when code is 4'
                   type: integer
                   minimum: 1
                   maximum: 4
                 value:
+                  description: 'You can use it when code is 4'
                   type: string
               required:
                 - code
@@ -682,8 +696,9 @@ paths:
                 ERR_INTERNAL_ERROR:
                   $ref: '#/components/responses/ERR_INTERNAL_ERROR'
 
-  /boards/{id}/comment: # need jwt
+  /boards/{id}/comment:
     post:
+      tags: ['Board']
       summary: board 댓글 추가
       security:
         - BearerAuth: []
@@ -732,7 +747,8 @@ paths:
                   $ref: '#/components/responses/ERR_INTERNAL_ERROR'
 
   /boards/{boardId}/comment/{commentId}:
-    patch: # need jwt
+    patch:
+      tags: ['Board']
       summary: board 댓글 수정
       security:
         - BearerAuth: []
@@ -786,7 +802,8 @@ paths:
                 ERR_INTERNAL_ERROR:
                   $ref: '#/components/responses/ERR_INTERNAL_ERROR'
 
-    delete: # need jwt
+    delete:
+      tags: ['Board']
       summary: board 댓글 삭제
       security:
         - BearerAuth: []
@@ -826,7 +843,8 @@ paths:
                   $ref: '#/components/responses/ERR_INTERNAL_ERROR'
 
   /boards/{boardId}/comment/{commentId}/report:
-    post: # need jwt
+    post:
+      tags: ['Board']
       summary: board 댓글 신고
       security:
         - BearerAuth: []
@@ -855,7 +873,7 @@ paths:
                   minimum: 1
                   maximum: 4
                 value:
-                  description: 'only when code is 4'
+                  description: 'You can use it when code is 4'
                   type: string
               required:
                 - code
@@ -888,6 +906,7 @@ paths:
   # /files
   /files:
     get:
+      tags: ['File']
       summary: file 컬렉션 가져오기
       responses:
         200:
@@ -905,6 +924,7 @@ paths:
 
   /files/download/{id}:
     get:
+      tags: ['File']
       summary: file 도큐먼트 가져오기
       parameters:
         - in: path
@@ -933,8 +953,9 @@ paths:
                 ERR_INTERNAL_ERROR:
                   $ref: '#/components/responses/ERR_INTERNAL_ERROR'
 
-  /files/upload: # need jwt
+  /files/upload:
     post:
+      tags: ['File']
       summary: file 도큐먼트 추가
       security:
         - BearerAuth: []
@@ -973,6 +994,7 @@ paths:
   # /fonts
   /fonts:
     get:
+      tags: ['Font']
       summary: font 컬렉션 가져오기
       responses:
         200:
@@ -1026,6 +1048,7 @@ paths:
 
   /fonts/upload:
     post:
+      tags: ['Font']
       summary: font 도큐먼트 추가
       security:
         - BearerAuth: []
@@ -1064,6 +1087,7 @@ paths:
   # /users
   /users/find-password:
     post:
+      tags: ['User']
       summary: 비밀번호 찾기(이메일 제출)
       requestBody:
         required: true
@@ -1102,7 +1126,8 @@ paths:
                   $ref: '#/components/responses/ERR_INTERNAL_ERROR'
 
   /users/password:
-    patch: # need jwt
+    patch:
+      tags: ['User']
       summary: 회원의 password 변경
       security:
         - BearerAuth: []
@@ -1152,7 +1177,8 @@ paths:
                   $ref: '#/components/responses/ERR_INTERNAL_ERROR'
 
   /users/nickname:
-    patch: # need jwt
+    patch:
+      tags: ['User']
       summary: 회원의 nickname 변경
       security:
         - BearerAuth: []
@@ -1196,7 +1222,8 @@ paths:
                   $ref: '#/components/responses/ERR_INTERNAL_ERROR'
 
   /users/info:
-    patch: # need jwt
+    patch:
+      tags: ['User']
       summary: 회원정보 변경
       security:
         - BearerAuth: []

@@ -12,6 +12,7 @@ properties:
     type: string
   birthDay:
     type: string
+    format: date
   createdAt:
     type: string
     format: date-time

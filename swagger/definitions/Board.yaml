@@ -23,7 +23,9 @@ properties:
         code:
           type: integer
           minimum: 1
+          maximum: 4
         value:
+          description: 'You can use it when code is 4'
           type: string
         createdAt:
           type: string
@@ -51,7 +53,9 @@ properties:
               code:
                 type: integer
                 minimum: 1
+                maximum: 4
               value:
+                description: 'You can use it when code is 4'
                 type: string
               createdAt:
                 type: string  
