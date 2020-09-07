@@ -1,0 +1,4 @@
+value:
+  message: 'error'
+  error_code: 'ERR_INVALID_EMAIL_PWD'
+  description: '이메일이나 비밀번호가 틀렸습니다'

@@ -1,0 +1,4 @@
+value:
+  message: 'error'
+  error_code: 'ERR_INVALID_EMAIL'
+  description: '사용할 수 없는 이메일입니다. 이메일 인증을 완료해주세요.'

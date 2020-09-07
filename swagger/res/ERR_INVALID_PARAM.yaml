@@ -1,0 +1,4 @@
+value:
+  message: 'error'
+  error_code: 'ERR_INVALID_PARAM'
+  description: '파라미터가 유효하지 않습니다.'

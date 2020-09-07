@@ -1,0 +1,4 @@
+value:
+  message: 'error'
+  error_code: 'ERR_INVALID_REQUEST'
+  description: '요청이 잘못됐습니다'

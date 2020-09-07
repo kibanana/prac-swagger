@@ -1,4 +1,4 @@
-openapi: 3.0.1
+openapi: 3.0.0
 info:
   version: 1.0.0
   title: test API
@@ -32,13 +32,31 @@ components:
       $ref: ./swagger/definitions/User.yaml
   responses:
     SUCCESS:
-      $ref: ./swagger/res/200.yaml
+      $ref: ./swagger/res/SUCCESS.yaml
     ERR_BAD_REQUEST:
-      $ref: ./swagger/res/400.yaml
-    ERROR_NOT_FOUND:
-      $ref: ./swagger/res/404.yaml
+      $ref: ./swagger/res/ERR_BAD_REQUEST.yaml
+    ERR_EXIST_EMAIL:
+      $ref: ./swagger/res/ERR_EXIST_EMAIL.yaml
+    ERR_EXIST_NICKNAME:
+      $ref: ./swagger/res/ERR_EXIST_NICKNAME.yaml
     ERR_INTERNAL_ERROR:
-      $ref: ./swagger/res/500.yaml
+      $ref: ./swagger/res/ERR_INTERNAL_ERROR.yaml
+    ERR_INVALID_EMAIL:
+      $ref: ./swagger/res/ERR_INVALID_EMAIL.yaml
+    ERR_INVALID_EMAIL_PWD:
+      $ref: ./swagger/res/ERR_INVALID_EMAIL_PWD.yaml
+    ERR_INVALID_PARAM:
+      $ref: ./swagger/res/ERR_INVALID_PARAM.yaml
+    ERR_INVALID_PWD:
+      $ref: ./swagger/res/ERR_INVALID_PWD.yaml
+    ERR_INVALID_REQUEST:
+      $ref: ./swagger/res/ERR_INVALID_REQUEST.yaml
+    ERR_NOT_EXIST:
+      $ref: ./swagger/res/ERR_NOT_EXIST.yaml
+    ERR_NOT_FOUND:
+      $ref: ./swagger/res/ERR_NOT_FOUND.yaml
+    
+    
 paths:
   # /auth
   /auth/sign-up:
@@ -90,22 +108,29 @@ paths:
           description: 성공
           content:
             application/json:
-              schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-                    example: success
+              examples:
+                SUCCESS: 
+                  $ref: '#/components/responses/SUCCESS'
         400:
           description: (Bad Request) 클라이언트 에러 발생
           content:
             application/json:
-              $ref: '#/components/responses/ERR_BAD_REQUEST'
+              examples:
+                ERR_INVALID_PARAM:
+                  $ref: '#/components/responses/ERR_INVALID_PARAM'
+                ERR_EXIST_EMAIL:
+                  $ref: '#/components/responses/ERR_EXIST_EMAIL'
+                ERR_EXIST_NICKNAME:
+                  $ref: '#/components/responses/ERR_EXIST_NICKNAME'
+                ERR_INVALID_EMAIL:
+                  $ref: '#/components/responses/ERR_INVALID_EMAIL'
         500:
           description: (Internal Server Error) 서버 에러 발생
           content:
             application/json:
-              $ref: '#/components/responses/ERR_INTERNAL_ERROR'
+              examples:
+                ERR_INTERNAL_ERROR:
+                  $ref: '#/components/responses/ERR_INTERNAL_ERROR'
 
   /auth/sign-in:
     post:
@@ -130,25 +155,23 @@ paths:
                 value:
                   email: "kyw0177@gmail.com"
                   password: "asdf1234*"
-            
       responses:
         200:
           description: 성공
           content:
             application/json:
-              $ref: '#/components/responses/SUCCESS'
-        400:
-          description: (Bad Request) 클라이언트 에러 발생
-          content:
-            application/json:
-              $ref: '#/components/responses/ERR_BAD_REQUEST'
+              examples:
+                SUCCESS: 
+                  $ref: '#/components/responses/SUCCESS'
         401:
           description: (Unauthorized) 인증 에러 발생
         500:
           description: (Internal Server Error) 서버 에러 발생
           content:
             application/json:
-              $ref: '#/components/responses/ERR_INTERNAL_ERROR'
+              examples:
+                ERR_INTERNAL_ERROR:
+                  $ref: '#/components/responses/ERR_INTERNAL_ERROR'
 
   /auth/sign-up/verify:
     post:
@@ -174,17 +197,23 @@ paths:
           description: 성공
           content:
             application/json:
-              $ref: '#/components/responses/SUCCESS'
+              examples:
+                SUCCESS: 
+                  $ref: '#/components/responses/SUCCESS'
         400:
           description: (Bad Request) 클라이언트 에러 발생
           content:
             application/json:
-              $ref: '#/components/responses/ERR_BAD_REQUEST'
+              examples:
+                ERR_INVALID_PARAM:
+                  $ref: '#/components/responses/ERR_INVALID_PARAM'
         500:
           description: (Internal Server Error) 서버 에러 발생
           content:
             application/json:
-              $ref: '#/components/responses/ERR_INTERNAL_ERROR'
+              examples:
+                ERR_INTERNAL_ERROR:
+                  $ref: '#/components/responses/ERR_INTERNAL_ERROR'
     get:
       summary: 이메일 인증
       parameters:
@@ -206,17 +235,23 @@ paths:
           description: 성공
           content:
             application/json:
-              $ref: '#/components/responses/SUCCESS'
+              examples:
+                SUCCESS: 
+                  $ref: '#/components/responses/SUCCESS'
         400:
           description: (Bad Request) 클라이언트 에러 발생
           content:
             application/json:
-              $ref: '#/components/responses/ERR_BAD_REQUEST'
+              examples:
+                ERR_INVALID_PARAM:
+                  $ref: '#/components/responses/ERR_INVALID_PARAM'
         500:
           description: (Internal Server Error) 서버 에러 발생
           content:
             application/json:
-              $ref: '#/components/responses/ERR_INTERNAL_ERROR'
+              examples:
+                ERR_INTERNAL_ERROR:
+                  $ref: '#/components/responses/ERR_INTERNAL_ERROR'
 
   /auth/jwt-verify:
     post: # need jwt
@@ -228,14 +263,18 @@ paths:
           description: 성공
           content:
             application/json:
-              $ref: '#/components/responses/SUCCESS'
+              examples:
+                SUCCESS: 
+                  $ref: '#/components/responses/SUCCESS'
         401:
           description: (Unauthorized) 인증 에러 발생
         500:
           description: (Internal Server Error) 서버 에러 발생
           content:
             application/json:
-              $ref: '#/components/responses/ERR_INTERNAL_ERROR'
+              examples:
+                ERR_INTERNAL_ERROR:
+                  $ref: '#/components/responses/ERR_INTERNAL_ERROR'
 
   # boards
   /boards:
@@ -258,15 +297,11 @@ paths:
           description: 성공
           content:
             application/json:
-              schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-                    example: success
-                  data:
-                    type: array
-                    example: [
+              examples:
+                SUCCESS:
+                  value:
+                    message: 'success'
+                    data: [
                       {
                         "_id": "5ef593a05304681d19bd3a4e",
                         "userId": "5ef31dace482ad8976aeb211",
@@ -302,7 +337,9 @@ paths:
           description: (Internal Server Error) 서버 에러 발생
           content:
             application/json:
-              $ref: '#/components/responses/ERR_INTERNAL_ERROR'
+              examples:
+                ERR_INTERNAL_ERROR:
+                  $ref: '#/components/responses/ERR_INTERNAL_ERROR'
     
     post:
       summary: board 도큐먼트 추가
@@ -332,19 +369,25 @@ paths:
           description: 성공
           content:
             application/json:
-              $ref: '#/components/responses/SUCCESS'
+              examples:
+                SUCCESS: 
+                  $ref: '#/components/responses/SUCCESS'
         400:
           description: (Bad Request) 클라이언트 에러 발생
           content:
             application/json:
-              $ref: '#/components/responses/ERR_BAD_REQUEST'
+              examples:
+                ERR_INVALID_PARAM:
+                  $ref: '#/components/responses/ERR_INVALID_PARAM'
         401:
           description: (Unauthorized) 인증 에러 발생
         500:
           description: (Internal Server Error) 서버 에러 발생
           content:
             application/json:
-              $ref: '#/components/responses/ERR_INTERNAL_ERROR'
+              examples:
+                ERR_INTERNAL_ERROR:
+                  $ref: '#/components/responses/ERR_INTERNAL_ERROR'
 
   /boards/{id}:
     get:
@@ -361,15 +404,11 @@ paths:
           description: 성공
           content:
             application/json:
-              schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-                    example: success
-                  data:
-                    type: object
-                    example: {
+              examples:
+                SUCCESS: 
+                  value:
+                    message: 'success'
+                    data: {
                       "_id": "5eda04e69014168b95dc3118",
                       "userId": "5ed9f4d01ca3427b81e17859",
                       "title": "ㄲㄲㄲ",
@@ -383,17 +422,23 @@ paths:
           description: (Bad Request) 클라이언트 에러 발생
           content:
             application/json:
-              $ref: '#/components/responses/ERR_BAD_REQUEST'
+              examples:
+                ERR_INVALID_PARAM:
+                  $ref: '#/components/responses/ERR_INVALID_PARAM'
         404:
           description: (Not Found) 원하는 리소스를 제공할 수 없음
           content:
             application/json:
-              $ref: '#/components/responses/ERROR_NOT_FOUND'
+              examples:
+                ERR_NOT_FOUND:
+                  $ref: '#/components/responses/ERR_NOT_FOUND'
         500:
           description: (Internal Server Error) 서버 에러 발생
           content:
             application/json:
-              $ref: '#/components/responses/ERR_INTERNAL_ERROR'
+              examples:
+                ERR_INTERNAL_ERROR:
+                  $ref: '#/components/responses/ERR_INTERNAL_ERROR'
 
     patch: # need jwt
       summary: board 도큐먼트 수정
@@ -426,28 +471,36 @@ paths:
                   title: "테스트 글 제목(수정)"
                   body: "테스트 글 내용(수정)"
       responses:
-          200:
-            description: 성공
-            content:
-              application/json:
-                $ref: '#/components/responses/SUCCESS'
-          400:
-            description: (Bad Request) 클라이언트 에러 발생
-            content:
-              application/json:
-                $ref: '#/components/responses/ERR_BAD_REQUEST'
-          401:
-            description: (Unauthorized) 인증 에러 발생
-          404:
-            description: (Not Found) 원하는 리소스를 제공할 수 없음
-            content:
-              application/json:
-                $ref: '#/components/responses/ERROR_NOT_FOUND'
-          500:
-            description: (Internal Server Error) 서버 에러 발생
-            content:
-              application/json:
-                $ref: '#/components/responses/ERR_INTERNAL_ERROR'
+        200:
+          description: 성공
+          content:
+            application/json:
+              examples:
+                SUCCESS: 
+                  $ref: '#/components/responses/SUCCESS'
+        400:
+          description: (Bad Request) 클라이언트 에러 발생
+          content:
+            application/json:
+              examples:
+                ERR_INVALID_PARAM:
+                  $ref: '#/components/responses/ERR_INVALID_PARAM'
+        401:
+          description: (Unauthorized) 인증 에러 발생
+        404:
+          description: (Not Found) 원하는 리소스를 제공할 수 없음
+          content:
+            application/json:
+              examples:
+                ERR_NOT_FOUND:
+                  $ref: '#/components/responses/ERR_NOT_FOUND'
+        500:
+          description: (Internal Server Error) 서버 에러 발생
+          content:
+            application/json:
+              examples:
+                ERR_INTERNAL_ERROR:
+                  $ref: '#/components/responses/ERR_INTERNAL_ERROR'
 
     delete: # need jwt
       summary: board 도큐먼트 삭제
@@ -465,24 +518,32 @@ paths:
           description: 성공
           content:
             application/json:
-              $ref: '#/components/responses/SUCCESS'
+              examples:
+                SUCCESS: 
+                  $ref: '#/components/responses/SUCCESS'
         400:
           description: (Bad Request) 클라이언트 에러 발생
           content:
             application/json:
-              $ref: '#/components/responses/ERR_BAD_REQUEST'
+              examples:
+                ERR_INVALID_PARAM:
+                  $ref: '#/components/responses/ERR_INVALID_PARAM'
         401:
           description: (Unauthorized) 인증 에러 발생
         404:
           description: (Not Found) 원하는 리소스를 제공할 수 없음
           content:
             application/json:
-              $ref: '#/components/responses/ERROR_NOT_FOUND'
+              examples:
+                ERR_NOT_FOUND:
+                  $ref: '#/components/responses/ERR_NOT_FOUND'
         500:
           description: (Internal Server Error) 서버 에러 발생
           content:
             application/json:
-              $ref: '#/components/responses/ERR_INTERNAL_ERROR'
+              examples:
+                ERR_INTERNAL_ERROR:
+                  $ref: '#/components/responses/ERR_INTERNAL_ERROR'
 
   /boards/analysis:
     get:
@@ -492,28 +553,47 @@ paths:
           description: 성공
           content:
             application/json:
-              schema:
-                type: object
-                properties:
-                  message: 
-                    type: string
-                    example: success
-                  data:
-                    type: array
-                    items:
-                      type: object
-                      properties:
-                        boardCnt:
-                          type: integer
-                        likeCnt:
-                          type: integer
-                        username:
-                          type: string
+              examples:
+                SUCCESS:
+                  value: {
+                    "message": "success",
+                    "data": [
+                      {
+                        "boardCnt": 23,
+                        "likeCnt": 4,
+                        "username": "yewon63"
+                      },
+                      {
+                        "boardCnt": 15,
+                        "likeCnt": 2
+                      },
+                      {
+                        "boardCnt": 2,
+                        "likeCnt": 0
+                      },
+                      {
+                        "boardCnt": 1,
+                        "likeCnt": 1,
+                        "username": "띠롱"
+                      },
+                      {
+                        "boardCnt": 1,
+                        "likeCnt": 1,
+                        "username": "dig"
+                      },
+                      {
+                        "boardCnt": 1,
+                        "likeCnt": 0
+                      }
+                    ]
+                  }
         500:
           description: (Internal Server Error) 서버 에러 발생
           content:
             application/json:
-              $ref: '#/components/responses/ERR_INTERNAL_ERROR'
+              examples:
+                ERR_INTERNAL_ERROR:
+                  $ref: '#/components/responses/ERR_INTERNAL_ERROR'
 
   /boards/{id}/like: # need jwt
     post:
@@ -532,24 +612,25 @@ paths:
           description: 성공
           content:
             application/json:
-              $ref: '#/components/responses/SUCCESS'
+              examples:
+                SUCCESS: 
+                  $ref: '#/components/responses/SUCCESS'
         400:
           description: (Bad Request) 클라이언트 에러 발생
           content:
             application/json:
-              $ref: '#/components/responses/ERR_BAD_REQUEST'
+              examples:
+                ERR_INVALID_PARAM:
+                  $ref: '#/components/responses/ERR_INVALID_PARAM'
         401:
           description: (Unauthorized) 인증 에러 발생
-        404:
-          description: (Not Found) 원하는 리소스를 제공할 수 없음
-          content:
-            application/json:
-              $ref: '#/components/responses/ERROR_NOT_FOUND'
         500:
           description: (Internal Server Error) 서버 에러 발생
           content:
             application/json:
-              $ref: '#/components/responses/ERR_INTERNAL_ERROR'
+              examples:
+                ERR_INTERNAL_ERROR:
+                  $ref: '#/components/responses/ERR_INTERNAL_ERROR'
 
   /boards/{id}/like/cancel: # need jwt
     delete:
@@ -568,19 +649,25 @@ paths:
           description: 성공
           content:
             application/json:
-              $ref: '#/components/responses/SUCCESS'
+              examples:
+                SUCCESS: 
+                  $ref: '#/components/responses/SUCCESS'
         400:
           description: (Bad Request) 클라이언트 에러 발생
           content:
             application/json:
-              $ref: '#/components/responses/ERR_BAD_REQUEST'
+              examples:
+                ERR_INVALID_PARAM:
+                  $ref: '#/components/responses/ERR_INVALID_PARAM'
         401:
           description: (Unauthorized) 인증 에러 발생
         500:
           description: (Internal Server Error) 서버 에러 발생
           content:
             application/json:
-              $ref: '#/components/responses/ERR_INTERNAL_ERROR'
+              examples:
+                ERR_INTERNAL_ERROR:
+                  $ref: '#/components/responses/ERR_INTERNAL_ERROR'
 
   /boards/{id}/report: # need jwt
     post:
@@ -602,8 +689,10 @@ paths:
               type: object
               properties:
                 code:
+                  description: 'only when code is 4'
                   type: integer
                   minimum: 1
+                  maximum: 4
                 value:
                   type: string
               required:
@@ -617,19 +706,25 @@ paths:
           description: 성공
           content:
             application/json:
-              $ref: '#/components/responses/SUCCESS'
+              examples:
+                SUCCESS: 
+                  $ref: '#/components/responses/SUCCESS'
         400:
           description: (Bad Request) 클라이언트 에러 발생
           content:
             application/json:
-              $ref: '#/components/responses/ERR_BAD_REQUEST'
+              examples:
+                ERR_INVALID_PARAM:
+                  $ref: '#/components/responses/ERR_INVALID_PARAM'
         401:
           description: (Unauthorized) 인증 에러 발생
         500:
           description: (Internal Server Error) 서버 에러 발생
           content:
             application/json:
-              $ref: '#/components/responses/ERR_INTERNAL_ERROR'
+              examples:
+                ERR_INTERNAL_ERROR:
+                  $ref: '#/components/responses/ERR_INTERNAL_ERROR'
 
   /boards/{id}/comment: # need jwt
     post:
@@ -663,19 +758,25 @@ paths:
           description: 성공
           content:
             application/json:
-              $ref: '#/components/responses/SUCCESS'
+              examples:
+                SUCCESS:
+                  $ref: '#/components/responses/SUCCESS'
         400:
           description: (Bad Request) 클라이언트 에러 발생
           content:
             application/json:
-              $ref: '#/components/responses/ERR_BAD_REQUEST'
+              examples:
+                ERR_INVALID_PARAM:
+                  $ref: '#/components/responses/ERR_INVALID_PARAM'
         401:
           description: (Unauthorized) 인증 에러 발생
         500:
           description: (Internal Server Error) 서버 에러 발생
           content:
             application/json:
-              $ref: '#/components/responses/ERR_INTERNAL_ERROR'
+              examples:
+                ERR_INTERNAL_ERROR:
+                  $ref: '#/components/responses/ERR_INTERNAL_ERROR'
 
   /boards/{boardId}/comment/{commentId}:
     patch: # need jwt
@@ -715,19 +816,25 @@ paths:
           description: 성공
           content:
             application/json:
-              $ref: '#/components/responses/SUCCESS'
+              examples:
+                SUCCESS: 
+                  $ref: '#/components/responses/SUCCESS'
         400:
           description: (Bad Request) 클라이언트 에러 발생
           content:
             application/json:
-              $ref: '#/components/responses/ERR_BAD_REQUEST'
+              examples:
+                ERR_INVALID_PARAM:
+                  $ref: '#/components/responses/ERR_INVALID_PARAM'
         401:
           description: (Unauthorized) 인증 에러 발생
         500:
           description: (Internal Server Error) 서버 에러 발생
           content:
             application/json:
-              $ref: '#/components/responses/ERR_INTERNAL_ERROR'
+              examples:
+                ERR_INTERNAL_ERROR:
+                  $ref: '#/components/responses/ERR_INTERNAL_ERROR'
 
     delete: # need jwt
       summary: board 댓글 삭제
@@ -751,19 +858,25 @@ paths:
           description: 성공
           content:
             application/json:
-              $ref: '#/components/responses/SUCCESS'
+              examples:
+                SUCCESS: 
+                  $ref: '#/components/responses/SUCCESS'
         400:
           description: (Bad Request) 클라이언트 에러 발생
           content:
             application/json:
-              $ref: '#/components/responses/ERR_BAD_REQUEST'
+              examples:
+                ERR_INVALID_PARAM:
+                  $ref: '#/components/responses/ERR_INVALID_PARAM'
         401:
           description: (Unauthorized) 인증 에러 발생
         500:
           description: (Internal Server Error) 서버 에러 발생
           content:
             application/json:
-              $ref: '#/components/responses/ERR_INTERNAL_ERROR'
+              examples:
+                ERR_INTERNAL_ERROR:
+                  $ref: '#/components/responses/ERR_INTERNAL_ERROR'
 
   /boards/{boardId}/comment/{commentId}/report:
     post: # need jwt
@@ -793,7 +906,9 @@ paths:
                 code:
                   type: integer
                   minimum: 1
+                  maximum: 4
                 value:
+                  description: 'only when code is 4'
                   type: string
               required:
                 - code
@@ -806,19 +921,25 @@ paths:
           description: 성공
           content:
             application/json:
-              $ref: '#/components/responses/SUCCESS'
+              examples:
+                SUCCESS: 
+                  $ref: '#/components/responses/SUCCESS'
         400:
           description: (Bad Request) 클라이언트 에러 발생
           content:
             application/json:
-              $ref: '#/components/responses/ERR_BAD_REQUEST'
+              examples:
+                ERR_INVALID_PARAM:
+                  $ref: '#/components/responses/ERR_INVALID_PARAM'
         401:
           description: (Unauthorized) 인증 에러 발생
         500:
           description: (Internal Server Error) 서버 에러 발생
           content:
             application/json:
-              $ref: '#/components/responses/ERR_INTERNAL_ERROR'
+              examples:
+                ERR_INTERNAL_ERROR:
+                  $ref: '#/components/responses/ERR_INTERNAL_ERROR'
 
   # /files
   /files:
@@ -829,12 +950,16 @@ paths:
           description: 성공
           content:
             application/json:
-              $ref: '#/components/responses/SUCCESS'
+              examples:
+                SUCCESS: 
+                  $ref: '#/components/responses/SUCCESS'
         500:
           description: (Internal Server Error) 서버 에러 발생
           content:
             application/json:
-              $ref: '#/components/responses/ERR_INTERNAL_ERROR'
+              examples:
+                ERR_INTERNAL_ERROR:
+                  $ref: '#/components/responses/ERR_INTERNAL_ERROR'
 
   /files/download/{id}:
     get:
@@ -851,17 +976,23 @@ paths:
           description: 성공
           content:
             application/json:
-              $ref: '#/components/responses/SUCCESS'
+              examples:
+                SUCCESS: 
+                  $ref: '#/components/responses/SUCCESS'
         400:
           description: (Bad Request) 클라이언트 에러 발생
           content:
             application/json:
-              $ref: '#/components/responses/ERR_BAD_REQUEST'
+              examples:
+                ERR_INVALID_PARAM:
+                  $ref: '#/components/responses/ERR_INVALID_PARAM'
         500:
           description: (Internal Server Error) 서버 에러 발생
           content:
             application/json:
-              $ref: '#/components/responses/ERR_INTERNAL_ERROR'
+              examples:
+                ERR_INTERNAL_ERROR:
+                  $ref: '#/components/responses/ERR_INTERNAL_ERROR'
 
   /files/upload: # need jwt
     post:
@@ -883,19 +1014,25 @@ paths:
           description: 성공
           content:
             application/json:
-              $ref: '#/components/responses/SUCCESS'
+              examples:
+                SUCCESS: 
+                  $ref: '#/components/responses/SUCCESS'
         400:
           description: (Bad Request) 클라이언트 에러 발생
           content:
             application/json:
-              $ref: '#/components/responses/ERR_BAD_REQUEST'
+              examples:
+                ERR_INVALID_PARAM:
+                  $ref: '#/components/responses/ERR_INVALID_PARAM'
         401:
           description: (Unauthorized) 인증 에러 발생
         500:
           description: (Internal Server Error) 서버 에러 발생
           content:
             application/json:
-              $ref: '#/components/responses/ERR_INTERNAL_ERROR'
+              examples:
+                ERR_INTERNAL_ERROR:
+                  $ref: '#/components/responses/ERR_INTERNAL_ERROR'
 
   # /fonts
   /fonts:
@@ -906,53 +1043,52 @@ paths:
           description: 성공
           content:
             application/json:
-              schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-                  data:
-                    type: array
-                    example: [
-                      {
-                          "_id": "5f50d4677d3abb2adbbaf0ff",
-                          "fileName": "DX3G1Std-B.otf",
-                          "postscriptName": "DX3G1Std-B",
-                          "fullName": "DX3G1Std Bold",
-                          "familyName": "DX3G1Std Bold",
-                          "subfamilyName": "Regular",
-                          "copyright": "Copyright 2011 DXKorea Inc. All rights reserved.",
-                          "version": "Version 1.0",
-                          "__v": 0
-                      },
-                      {
-                          "_id": "5f50d4677d3abb2adbbaf100",
-                          "fileName": "HoonSaemaulundongR.ttf",
-                          "postscriptName": "HoonSaemaR",
-                          "fullName": "1HoonSaemaulundong Regular",
-                          "familyName": "1HoonSaemaulundong R",
-                          "subfamilyName": "Regular",
-                          "copyright": "Copyright (c) 2013 HOON DESIGN. All rights reserved.\r\nwww.hoondesign.co.kr / Tel 070-8278-1187\r\nwebmaster@hoondesign.co.kr",
-                          "version": "Version 1.0",
-                          "__v": 0
-                      },
-                      {
-                          "_id": "5f50d4677d3abb2adbbaf101",
-                          "fileName": "Meslo LG M Regular for Powerline.ttf",
-                          "postscriptName": "MesloLGMForPowerline-Regular",
-                          "fullName": "Meslo LG M Regular for Powerline",
-                          "familyName": "Meslo LG M for Powerline",
-                          "subfamilyName": "Regular",
-                          "copyright": "Copyright © 2009 Apple Inc. Copyright ©  2006 by Tavmjong Bah. Copyright © 2003 by Bitstream, Inc. All Rights Reserved.",
-                          "version": "1.210",
-                          "__v": 0
-                      }
+              examples:
+                SUCCESS:
+                  value:
+                    message: 'success'
+                    data: [
+                        {
+                            "_id": "5f50d4677d3abb2adbbaf0ff",
+                            "fileName": "DX3G1Std-B.otf",
+                            "postscriptName": "DX3G1Std-B",
+                            "fullName": "DX3G1Std Bold",
+                            "familyName": "DX3G1Std Bold",
+                            "subfamilyName": "Regular",
+                            "copyright": "Copyright 2011 DXKorea Inc. All rights reserved.",
+                            "version": "Version 1.0",
+                            "__v": 0
+                        },
+                        {
+                            "_id": "5f50d4677d3abb2adbbaf100",
+                            "fileName": "HoonSaemaulundongR.ttf",
+                            "postscriptName": "HoonSaemaR",
+                            "fullName": "1HoonSaemaulundong Regular",
+                            "familyName": "1HoonSaemaulundong R",
+                            "subfamilyName": "Regular",
+                            "copyright": "Copyright (c) 2013 HOON DESIGN. All rights reserved.\r\nwww.hoondesign.co.kr / Tel 070-8278-1187\r\nwebmaster@hoondesign.co.kr",
+                            "version": "Version 1.0",
+                            "__v": 0
+                        },
+                        {
+                            "_id": "5f50d4677d3abb2adbbaf101",
+                            "fileName": "Meslo LG M Regular for Powerline.ttf",
+                            "postscriptName": "MesloLGMForPowerline-Regular",
+                            "fullName": "Meslo LG M Regular for Powerline",
+                            "familyName": "Meslo LG M for Powerline",
+                            "subfamilyName": "Regular",
+                            "copyright": "Copyright © 2009 Apple Inc. Copyright ©  2006 by Tavmjong Bah. Copyright © 2003 by Bitstream, Inc. All Rights Reserved.",
+                            "version": "1.210",
+                            "__v": 0
+                        }
                     ]
         500:
           description: (Internal Server Error) 서버 에러 발생
           content:
             application/json:
-              $ref: '#/components/responses/ERR_INTERNAL_ERROR'
+              examples:
+                ERR_INTERNAL_ERROR:
+                  $ref: '#/components/responses/ERR_INTERNAL_ERROR'
 
   /fonts/upload:
     post:
@@ -974,19 +1110,25 @@ paths:
           description: 성공
           content:
             application/json:
-              $ref: '#/components/responses/SUCCESS'
+              examples:
+                SUCCESS: 
+                  $ref: '#/components/responses/SUCCESS'
         400:
           description: (Bad Request) 클라이언트 에러 발생
           content:
             application/json:
-              $ref: '#/components/responses/ERR_BAD_REQUEST'
+              examples:
+                ERR_INVALID_PARAM:
+                  $ref: '#/components/responses/ERR_INVALID_PARAM'
         401:
           description: (Unauthorized) 인증 에러 발생
         500:
           description: (Internal Server Error) 서버 에러 발생
           content:
             application/json:
-              $ref: '#/components/responses/ERR_INTERNAL_ERROR'
+              examples:
+                ERR_INTERNAL_ERROR:
+                  $ref: '#/components/responses/ERR_INTERNAL_ERROR'
 
   # /users
   /users/find-password:
@@ -1013,17 +1155,23 @@ paths:
           description: 성공
           content:
             application/json:
-              $ref: '#/components/responses/SUCCESS'
+              examples:
+                SUCCESS: 
+                  $ref: '#/components/responses/SUCCESS'
         400:
           description: (Bad Request) 클라이언트 에러 발생
           content:
             application/json:
-              $ref: '#/components/responses/ERR_BAD_REQUEST'
+              examples:
+                ERR_INVALID_PARAM:
+                  $ref: '#/components/responses/ERR_INVALID_PARAM'
         500:
           description: (Internal Server Error) 서버 에러 발생
           content:
             application/json:
-              $ref: '#/components/responses/ERR_INTERNAL_ERROR'
+              examples:
+                ERR_INTERNAL_ERROR:
+                  $ref: '#/components/responses/ERR_INTERNAL_ERROR'
 
   /users/password:
     patch: # need jwt
@@ -1056,19 +1204,27 @@ paths:
           description: 성공
           content:
             application/json:
-              $ref: '#/components/responses/SUCCESS'
+              examples:
+                SUCCESS: 
+                  $ref: '#/components/responses/SUCCESS'
         400:
           description: (Bad Request) 클라이언트 에러 발생
           content:
             application/json:
-              $ref: '#/components/responses/ERR_BAD_REQUEST'
+              examples:
+                ERR_INVALID_PARAM:
+                  $ref: '#/components/responses/ERR_INVALID_PARAM'
+                ERR_INVALID_PWD:
+                  $ref: '#/components/responses/ERR_INVALID_PWD'
         401:
           description: (Unauthorized) 인증 에러 발생
         500:
           description: (Internal Server Error) 서버 에러 발생
           content:
             application/json:
-              $ref: '#/components/responses/ERR_INTERNAL_ERROR'
+              examples:
+                ERR_INTERNAL_ERROR:
+                  $ref: '#/components/responses/ERR_INTERNAL_ERROR'
 
   /users/nickname:
     patch: # need jwt
@@ -1095,19 +1251,27 @@ paths:
           description: 성공
           content:
             application/json:
-              $ref: '#/components/responses/SUCCESS'
+              examples:
+                SUCCESS: 
+                  $ref: '#/components/responses/SUCCESS'
         400:
           description: (Bad Request) 클라이언트 에러 발생
           content:
             application/json:
-              $ref: '#/components/responses/ERR_BAD_REQUEST'
+              examples:
+                ERR_INVALID_PARAM:
+                  $ref: '#/components/responses/ERR_INVALID_PARAM'
+                ERR_EXIST_NICKNAME:
+                  $ref: '#/components/responses/ERR_EXIST_NICKNAME'
         401:
           description: (Unauthorized) 인증 에러 발생
         500:
           description: (Internal Server Error) 서버 에러 발생
           content:
             application/json:
-              $ref: '#/components/responses/ERR_INTERNAL_ERROR'
+              examples:
+                ERR_INTERNAL_ERROR:
+                  $ref: '#/components/responses/ERR_INTERNAL_ERROR'
 
   /users/info:
     patch: # need jwt
@@ -1142,16 +1306,24 @@ paths:
           description: 성공
           content:
             application/json:
-              $ref: '#/components/responses/SUCCESS'
+              examples:
+                SUCCESS: 
+                  $ref: '#/components/responses/SUCCESS'
         400:
           description: (Bad Request) 클라이언트 에러 발생
           content:
             application/json:
-              $ref: '#/components/responses/ERR_BAD_REQUEST'
+              examples:
+                ERR_INVALID_PARAM:
+                  $ref: '#/components/responses/ERR_INVALID_PARAM'
+                ERR_EXIST_NICKNAME:
+                  $ref: '#/components/responses/ERR_EXIST_NICKNAME'
         401:
           description: (Unauthorized) 인증 에러 발생
         500:
           description: (Internal Server Error) 서버 에러 발생
           content:
             application/json:
-              $ref: '#/components/responses/ERR_INTERNAL_ERROR'
+              examples:
+                ERR_INTERNAL_ERROR:
+                  $ref: '#/components/responses/ERR_INTERNAL_ERROR'

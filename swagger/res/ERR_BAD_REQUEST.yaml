@@ -1,0 +1,4 @@
+value:
+  message: 'error'
+  error_code: 'ERR_BAD_REQUEST'
+  description: '잘못된 요청입니다.'

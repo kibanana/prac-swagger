@@ -1,0 +1,4 @@
+value:
+  message: 'error'
+  error_code: 'ERR_INTERNAL_ERROR'
+  description: '서버에 오류가 발생했습니다.'

@@ -1,0 +1,4 @@
+value:
+  message: 'error'
+  error_code: 'ERR_NOT_EXIST'
+  description: '식별자 데이터가 DB에 없습니다'

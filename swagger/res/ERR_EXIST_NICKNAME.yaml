@@ -1,0 +1,4 @@
+value:
+  message: 'error'
+  error_code: 'ERR_EXIST_NICKNAME'
+  description: '다른 사용자의 닉네임입니다'
