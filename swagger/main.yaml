@@ -1,0 +1,23 @@
+openapi: 3.0.0
+info:
+  version: 
+  title: VIDEOMOSNTER API
+  description: VIDEOMONSTER API Document
+servers:
+  - url: http://localhost:3000/apis
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  res:
+    SUCCESS:
+      value:
+        message: 'success'
+    ERR_INTERNAL_ERROR:
+      value:
+        message: 'error'
+        error_code: 'ERR_INTERNAL_ERROR'
+        description: '서버에 오류가 발생했습니다.'
+paths:

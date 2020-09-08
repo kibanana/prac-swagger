@@ -12,10 +12,29 @@ const fs = require('fs')
 const asyncReadFile = util.promisify(fs.readFile)
 const jsYaml = require('js-yaml')
 const swaggerUi = require('swagger-ui-express')
-const swaggerPathsCreator = require('./swagger/paths')
 
 require('dotenv').config()
 require('./model')
+
+const swaggerSpec = asyncReadFile('./swagger/openapi.yaml', 'utf8')
+  .then(swaggerConfigYaml => jsYaml.safeLoad(swaggerConfigYaml))
+  .catch(err => console.log(err))
+
+const swaggerSpecTest = asyncReadFile('./swagger/main.yaml', 'utf8')
+  .then(swaggerConfigYaml => jsYaml.safeLoad(swaggerConfigYaml))
+  .catch(err => console.log(err))
+
+const swaggerSpecExample = asyncReadFile('./swagger/example.yaml', 'utf8')
+  .then(swaggerConfigYaml => jsYaml.safeLoad(swaggerConfigYaml))
+  .catch(err => console.log(err))
+
+const swaggerSpecLink = asyncReadFile('./swagger/link.yaml', 'utf8')
+  .then(swaggerConfigYaml => jsYaml.safeLoad(swaggerConfigYaml))
+  .catch(err => console.log(err))
+
+const swaggerSpecPetStore = asyncReadFile('./swagger/petstore.yaml', 'utf8')
+  .then(swaggerConfigYaml => jsYaml.safeLoad(swaggerConfigYaml))
+  .catch(err => console.log(err))
 
 const app = express()
 
@@ -29,66 +48,13 @@ app.use('/api', api)
 app.use('/v1', api)
 
 app.use('/', express.static(path.join(__dirname)))
-app.use('/', swaggerUi.serve)
-app.get('/api-docs',
-async (req, res, next) => {
-  asyncReadFile('./swagger/openapi.yaml', 'utf8')
-    .then((swaggerConfigYaml) => {
-      // 여기서 value로 처리하니까 계속 문제가 생김 (두 번으로 중복되는 yaml 값이 들어감)
-      // req.config = swaggerConfigYaml
-      req.config = jsYaml.safeLoad(swaggerConfigYaml)
-      next()
-    })
-    .catch(err => console.log(err))
-}, (req, res, next) => {
-  // swaggerUi.setup(req.config)
-  res.json(req.config)
-})
 
-app.get('/example',
-async (req, res, next) => {
-  asyncReadFile('./swagger/example.yaml', 'utf8')
-    .then((swaggerConfigYaml) => {
-      // 여기서 value로 처리하니까 계속 문제가 생김 (두 번으로 중복되는 yaml 값이 들어감)
-      // req.config = swaggerConfigYaml
-      req.config = jsYaml.safeLoad(swaggerConfigYaml)
-      next()
-    })
-    .catch(err => console.log(err))
-}, (req, res, next) => {
-  // swaggerUi.setup(req.config)
-  res.json(req.config)
-})
-
-app.get('/link',
-async (req, res, next) => {
-  asyncReadFile('./swagger/link.yaml', 'utf8')
-    .then((swaggerConfigYaml) => {
-      // 여기서 value로 처리하니까 계속 문제가 생김 (두 번으로 중복되는 yaml 값이 들어감)
-      // req.config = swaggerConfigYaml
-      req.config = jsYaml.safeLoad(swaggerConfigYaml)
-      next()
-    })
-    .catch(err => console.log(err))
-}, (req, res, next) => {
-  // swaggerUi.setup(req.config)
-  res.json(req.config)
-})
-
-app.get('/petstore',
-async (req, res, next) => {
-  asyncReadFile('./swagger/petstore.yaml', 'utf8')
-    .then((swaggerConfigYaml) => {
-      // 여기서 value로 처리하니까 계속 문제가 생김 (두 번으로 중복되는 yaml 값이 들어감)
-      // req.config = swaggerConfigYaml
-      req.config = jsYaml.safeLoad(swaggerConfigYaml)
-      next()
-    })
-    .catch(err => console.log(err))
-}, (req, res, next) => {
-  // swaggerUi.setup(req.config)
-  res.json(req.config)
-})
+app.use('/api-docs', swaggerUi.serve)
+app.get('/api-docs/main', swaggerUi.serve, async (req, res) => res.json(await swaggerSpec))
+app.get('/api-docs/test', swaggerUi.serve, async (req, res) => res.json(await swaggerSpecTest))
+app.get('/api-docs/example', swaggerUi.serve, async (req, res) => res.json(await swaggerSpecExample))
+app.get('/api-docs/link', swaggerUi.serve, async (req, res) => res.json(await swaggerSpecLink))
+app.get('/api-docs/petstore', swaggerUi.serve, async (req, res) => res.json(await swaggerSpecPetStore))
 
 const server = http.createServer(app)
 const io = require('socket.io')(server)
