@@ -1,16 +1,18 @@
 const express = require('express')
-const swaggerUi = require('swagger-ui-express')
 const path = require('path')
-const cors = require('cors')
-const http = require('http')
-const faker = require('faker')
+const util = require('util')
 const fs = require('fs')
+const http = require('http')
+const cors = require('cors')
+const faker = require('faker')
 const jsYaml = require('js-yaml')
+const swaggerUi = require('swagger-ui-express')
 const passport = require('./middleware/passport')
 const api = require('./routes/api')
-
 require('dotenv').config()
 require('./model')
+
+const asyncReadFile = util.promisify(fs.readFile)
 
 const app = express()
 
@@ -19,18 +21,15 @@ app.use(express.json())
 app.use(passport.initialize())
 app.use(passport.session())
 app.use(cors())
+app.use('/', express.static(path.join(__dirname)))
+app.use('/', swaggerUi.serve)
 
 app.use('/api', api)
-app.use('/v1', api)
 
-app.use('/', express.static(path.join(__dirname)))
-
-app.use('/api-docs', swaggerUi.serve)
-app.use('/api-docs/main', swaggerUi.setup(jsYaml.safeLoad(fs.readFileSync('./swagger/openapi.yaml', 'utf8'))))
-app.use('/api-docs/test', swaggerUi.setup(jsYaml.safeLoad(fs.readFileSync('./swagger/test.yaml', 'utf8'))))
-app.use('/api-docs/example', swaggerUi.setup(jsYaml.safeLoad(fs.readFileSync('./swagger/example.yaml', 'utf8'))))
-app.use('/api-docs/link', swaggerUi.setup(jsYaml.safeLoad(fs.readFileSync('./swagger/link.yaml', 'utf8'))))
-app.use('/api-docs/petstore', swaggerUi.setup(jsYaml.safeLoad(fs.readFileSync('./swagger/petstore.yaml', 'utf8'))))
+app.get('/api-docs', async (req, res) => res.json(jsYaml.safeLoad(await asyncReadFile('./swagger/openapi.yaml', 'utf8'))))
+app.get('/api-docs/example', async (req, res) => res.json(jsYaml.safeLoad(await asyncReadFile('./swagger/example.yaml', 'utf8'))))
+app.get('/api-docs/link', async (req, res) => res.json(jsYaml.safeLoad(await asyncReadFile('./swagger/link.yaml', 'utf8'))))
+app.get('/api-docs/petstore', async (req, res) => res.json(jsYaml.safeLoad(await asyncReadFile('./swagger/petstore.yaml', 'utf8'))))
 
 const server = http.createServer(app)
 const io = require('socket.io')(server)

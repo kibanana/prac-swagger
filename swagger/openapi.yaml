@@ -10,7 +10,7 @@ servers:
       port:
         default: 3000
       basePath:
-        default: v1
+        default: api
 components:
   securitySchemes:
     BearerAuth:
