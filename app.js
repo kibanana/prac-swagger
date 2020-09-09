@@ -1,40 +1,16 @@
 const express = require('express')
-const passport = require('./middleware/passport')
-const api = require('./routes/api')
-
+const swaggerUi = require('swagger-ui-express')
 const path = require('path')
 const cors = require('cors')
 const http = require('http')
 const faker = require('faker')
-
-const util = require('util')
 const fs = require('fs')
-const asyncReadFile = util.promisify(fs.readFile)
 const jsYaml = require('js-yaml')
-const swaggerUi = require('swagger-ui-express')
+const passport = require('./middleware/passport')
+const api = require('./routes/api')
 
 require('dotenv').config()
 require('./model')
-
-const swaggerSpec = asyncReadFile('./swagger/openapi.yaml', 'utf8')
-  .then(swaggerConfigYaml => jsYaml.safeLoad(swaggerConfigYaml))
-  .catch(err => console.log(err))
-
-const swaggerSpecTest = asyncReadFile('./swagger/main.yaml', 'utf8')
-  .then(swaggerConfigYaml => jsYaml.safeLoad(swaggerConfigYaml))
-  .catch(err => console.log(err))
-
-const swaggerSpecExample = asyncReadFile('./swagger/example.yaml', 'utf8')
-  .then(swaggerConfigYaml => jsYaml.safeLoad(swaggerConfigYaml))
-  .catch(err => console.log(err))
-
-const swaggerSpecLink = asyncReadFile('./swagger/link.yaml', 'utf8')
-  .then(swaggerConfigYaml => jsYaml.safeLoad(swaggerConfigYaml))
-  .catch(err => console.log(err))
-
-const swaggerSpecPetStore = asyncReadFile('./swagger/petstore.yaml', 'utf8')
-  .then(swaggerConfigYaml => jsYaml.safeLoad(swaggerConfigYaml))
-  .catch(err => console.log(err))
 
 const app = express()
 
@@ -50,11 +26,11 @@ app.use('/v1', api)
 app.use('/', express.static(path.join(__dirname)))
 
 app.use('/api-docs', swaggerUi.serve)
-app.get('/api-docs/main', swaggerUi.serve, async (req, res) => res.json(await swaggerSpec))
-app.get('/api-docs/test', swaggerUi.serve, async (req, res) => res.json(await swaggerSpecTest))
-app.get('/api-docs/example', swaggerUi.serve, async (req, res) => res.json(await swaggerSpecExample))
-app.get('/api-docs/link', swaggerUi.serve, async (req, res) => res.json(await swaggerSpecLink))
-app.get('/api-docs/petstore', swaggerUi.serve, async (req, res) => res.json(await swaggerSpecPetStore))
+app.use('/api-docs/main', swaggerUi.setup(jsYaml.safeLoad(fs.readFileSync('./swagger/openapi.yaml', 'utf8'))))
+app.use('/api-docs/test', swaggerUi.setup(jsYaml.safeLoad(fs.readFileSync('./swagger/test.yaml', 'utf8'))))
+app.use('/api-docs/example', swaggerUi.setup(jsYaml.safeLoad(fs.readFileSync('./swagger/example.yaml', 'utf8'))))
+app.use('/api-docs/link', swaggerUi.setup(jsYaml.safeLoad(fs.readFileSync('./swagger/link.yaml', 'utf8'))))
+app.use('/api-docs/petstore', swaggerUi.setup(jsYaml.safeLoad(fs.readFileSync('./swagger/petstore.yaml', 'utf8'))))
 
 const server = http.createServer(app)
 const io = require('socket.io')(server)

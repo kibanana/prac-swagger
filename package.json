@@ -33,6 +33,7 @@
     "swagger-jsdoc": "^4.0.0",
     "swagger-ui-express": "^4.1.4",
     "unzipper": "^0.10.11",
-    "util": "^0.12.3"
+    "util": "^0.12.3",
+    "yamljs": "^0.3.0"
   }
 }
